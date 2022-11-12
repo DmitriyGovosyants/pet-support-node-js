@@ -54,8 +54,12 @@ const currentUserController = async (req, res) => {
   const currentUser = await findUserById(req.user.id);
 
   if (currentUser) {
-    const { email, subscription } = currentUser;
-    res.status(200).json({ email, subscription });
+    const { email } = currentUser;
+    res.status(200).json({
+      data: {
+        email,
+      },
+    });
   }
 };
 
@@ -69,7 +73,12 @@ const updateUserController = async (req, res) => {
   if (!user) {
     return res.status(400).json({ message: 'missing fields' });
   } else if (user) {
-    return res.status(200).json({ user, status: 'Success' });
+    return res.status(200).json({
+      data: {
+        user,
+      },
+      status: 'Success',
+    });
   }
   res.status(404).json({ message: 'Not found' });
 };
