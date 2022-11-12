@@ -24,9 +24,18 @@ const updateToken = async (id, token) => {
   await User.updateOne({ _id: id }, { token });
 };
 
+// Обновляет данные юзера
+const updateUser = async (id, body) => {
+  const updatedUser = await User.findByIdAndUpdate(id, body, {
+    new: true,
+  });
+  return updatedUser;
+};
+
 module.exports = {
   createUser,
   findUserById,
   findUserByEmail,
   updateToken,
+  updateUser,
 };
