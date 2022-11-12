@@ -1,4 +1,5 @@
-const { createUser, findUserByEmail } = '../services/userService.js';
+const { createUser, findUserByEmail, findUserById } =
+  '../services/userService.js';
 const { login, logout } = require('../services/authService');
 
 //  Регистрация юзера
@@ -41,8 +42,19 @@ const logoutController = async (req, res) => {
   res.status(204).json({ message: 'No Content' });
 };
 
+// Текущий юзер
+const currentUserController = async (req, res) => {
+  const currentUser = await findUserById(req.user.id);
+
+  if (currentUser) {
+    const { email, subscription } = currentUser;
+    res.status(200).json({ email, subscription });
+  }
+};
+
 module.exports = {
   registerController,
   loginController,
   logoutController,
+  currentUserController,
 };
