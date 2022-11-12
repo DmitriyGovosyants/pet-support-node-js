@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose")
 
-const newsShema = Schema({
+const newsShema = new Schema({
     title: {
         type: String,
         required: [true, 'Set denotation for news'],
