@@ -3,6 +3,8 @@ const Joi = require('joi');
 
 // Схема валидации регистрации и логина юзера
 const regLogUserSchema = Joi.object({
+  name: Joi.string().alphanum().min(7).max(16).required(),
+  sity: Joi.string().alphanum().min(4).max(20).required(),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
