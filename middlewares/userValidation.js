@@ -12,6 +12,9 @@ const regLogUserSchema = Joi.object({
   password: Joi.string()
     .pattern(/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/)
     .required(),
+  phone: Joi.string()
+    .pattern(/^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/)
+    .required(),
 });
 //  Пояснения пароля:
 // (?=.*[0-9]) - строка содержит хотя бы одно число;
