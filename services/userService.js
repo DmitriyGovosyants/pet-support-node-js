@@ -19,8 +19,14 @@ const findUserByEmail = async email => {
   return user;
 };
 
+// Обновляет токен юзера
+const updateToken = async (id, token) => {
+  await User.updateOne({ _id: id }, { token });
+};
+
 module.exports = {
   createUser,
   findUserById,
   findUserByEmail,
+  updateToken,
 };

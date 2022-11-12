@@ -1,7 +1,16 @@
-// const { createUser, findUserById, findUserByEmail } = require('./userService');
+const {
+  createUser,
+  findUserById,
+  findUserByEmail,
+  updateToken,
+} = require('./userService');
+const { login, logout } = require('./authService.js');
 
-// module.exports = {
-//   createUser,
-//   findUserById,
-//   findUserByEmail,
-// };
+module.exports = {
+  createUser,
+  findUserById,
+  findUserByEmail,
+  updateToken,
+  login,
+  logout,
+};

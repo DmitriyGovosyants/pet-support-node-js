@@ -1,8 +1,5 @@
-const {
-  createUser,
-  // findUserById,
-  findUserByEmail,
-} = '../services/userService.js';
+const { createUser, findUserByEmail } = '../services/userService.js';
+const { login, logout } = require('../services/authService');
 
 //  Регистрация юзера
 const registerController = async (req, res) => {
@@ -20,6 +17,32 @@ const registerController = async (req, res) => {
   });
 };
 
+// Вход юзера
+const loginController = async (req, res) => {
+  const token = await login(req.body);
+
+  if (token) {
+    const { email } = await findUserByEmail(req.body.email);
+    res.status(200).json({
+      token,
+      user: {
+        email,
+      },
+    });
+  }
+  res.status(401).json({
+    message: 'Email or password is wrong',
+  });
+};
+
+// Выход юзера
+const logoutController = async (req, res) => {
+  await logout(req.user.id);
+  res.status(204).json({ message: 'No Content' });
+};
+
 module.exports = {
   registerController,
+  loginController,
+  logoutController,
 };
