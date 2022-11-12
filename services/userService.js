@@ -26,7 +26,7 @@ const updateToken = async (id, token) => {
 
 // Обновляет данные юзера
 const updateUser = async (id, body) => {
-  const updatedUser = await User.findByIdAndUpdate(id, body, {
+  const updatedUser = await User.findByIdAndUpdate({ _id: id }, body, {
     new: true,
   });
   return updatedUser;
