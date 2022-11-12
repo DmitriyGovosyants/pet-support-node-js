@@ -64,8 +64,6 @@ const currentUserController = async (req, res) => {
 };
 
 // Обновление данных юзера
-
-// Обновление контакта
 const updateUserController = async (req, res) => {
   // const { name, email, birthday, phone, sity } = req.body;
   const user = await updateUser(req.user.id, req.body);
