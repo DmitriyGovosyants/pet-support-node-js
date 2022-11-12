@@ -16,15 +16,15 @@ const userSchema = new Schema(
     },
     name: {
       type: String,
-      // required: [true, 'Set your name'],
+      required: [true, 'Set your name'],
     },
     city: {
       type: String,
-      // required: [true, 'City is required'],
+      required: [true, 'City is required'],
     },
     phone: {
       type: String,
-      // required: [true, 'Phone is required'],
+      required: [true, 'Phone is required'],
     },
     token: {
       type: String,
@@ -34,7 +34,7 @@ const userSchema = new Schema(
     notices: [{ type: Schema.Types.ObjectId, ref: 'notices' }],
     favoriteNotices: [{ type: Schema.Types.ObjectId, ref: 'notices' }],
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: false }
 );
 
 // Хук, хеширует и солит пароль перед сохранением в базу

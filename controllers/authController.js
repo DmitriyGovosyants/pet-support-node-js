@@ -16,9 +16,11 @@ const registerController = async (req, res) => {
 
   const email = await createUser(req.body);
   res.status(201).json({
-    user: {
-      email,
+    status: 'success',
+    data: {
+      email: email,
     },
+    message: 'Registration success',
   });
 };
 
@@ -30,7 +32,7 @@ const loginController = async (req, res) => {
     const { email } = await findUserByEmail(req.body.email);
     res.status(200).json({
       token,
-      user: {
+      data: {
         email,
       },
     });

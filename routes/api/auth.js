@@ -11,9 +11,10 @@ const {
   currentUserController,
 } = require('../../controllers/authController');
 
+const { authentificate } = require('../../middlewares/authentificate');
 const ctrlWrapper = require('../../helpers/ctrWrapper');
 
 router.post('/signup', ctrlWrapper(registerController)); //   Регистрация
 router.post('/login', ctrlWrapper(loginController)); // Вход
-router.get('/logout', ctrlWrapper(logoutController)); // Выход
+router.get('/logout', authentificate, ctrlWrapper(logoutController)); // Выход
 router.get('/current', ctrlWrapper(currentUserController)); // Текущий юзер
