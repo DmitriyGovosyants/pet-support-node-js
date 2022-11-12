@@ -5,16 +5,19 @@ const { Schema } = mongoose;
 const petsSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Set name of your pet'],
+    required: [true, 'Type name pet'],
   },
   date: {
-    type: Number,
+    type: String,
+    required: [true, 'Type date of birth'],
   },
   breed: {
     type: String,
+    required: [true, 'Type breed'],
   },
   comments: {
     type: String,
+    required: [true, 'Type comments'],
   },
 });
 
