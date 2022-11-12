@@ -1,5 +1,9 @@
-const { createUser, findUserByEmail, findUserById } =
-  '../services/userService.js';
+const {
+  createUser,
+  findUserByEmail,
+  findUserById,
+} = require('../services/userService.js');
+
 const { login, logout } = require('../services/authService');
 
 //  Регистрация юзера

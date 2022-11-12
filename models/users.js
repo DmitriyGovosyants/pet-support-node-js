@@ -14,15 +14,15 @@ const userSchema = new Schema({
   },
   name: {
     type: String,
-    required: [true, 'Set your name'],
+    // required: [true, 'Set your name'],
   },
   city: {
     type: String,
-    required: [true, 'City is required'],
+    // required: [true, 'City is required'],
   },
   phone: {
     type: String,
-    required: [true, 'Phone is required'],
+    // required: [true, 'Phone is required'],
   },
 
   notices: [{ type: Schema.Types.ObjectId, ref: 'notices' }],
