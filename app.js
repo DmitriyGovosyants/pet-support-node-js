@@ -4,7 +4,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const {
-  // authRouter, userRouter, noticesRouter, servicesRouter,
+  // authRouter, userRouter, noticesRouter,
+  servicesRouter,
   newsRouter } = require('./routes')
 const authRouter = require('./routes/api/auth');
 
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/auth', authRouter);
 // app.use('/api/user', userRouter)
 // app.use('/api/notices', noticesRouter)
-// app.use('/api/services', servicesRouter)
+app.use('/api/services', servicesRouter)
 app.use('/api/news', newsRouter)
 
 app.use((req, res) => {

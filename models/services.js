@@ -11,21 +11,34 @@ const servicesShema = new Schema({
         required: 'URL can\'t be empty',
         unique: true
     },
-    addressUrl: {},
-    imageUrl: {},
+    addressUrl: {
+        type: String,
+        default: null,
+    },
+    imageUrl: {
+        type: String,
+        default: null,
+    },
     address: {
         type: String,
-        required: 'Description can\'t be empty',
+        default: null,
     },
     workDays:
         [
             {
-                id: Number,
-                name: String,
+                isOpen: Boolean,
+                from: String,
+                to: String,
             },
         ],
-    phone: {},
-    email: {}
+    phone: {
+        type: String,
+        default: null,
+    },
+    email: {
+        type: String,
+        default: null,
+    }
 }, {
     versionKey: false
     // , timestamps: true

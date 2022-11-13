@@ -11,10 +11,7 @@ const getServices = async (req, res, next) => {
             message: 'Get services success',
         })
     }
-    return res.status(404).json({
-        status: 'success',
-        message: 'Not found',
-    })
+    next()
 }
 
 module.exports = getServices 

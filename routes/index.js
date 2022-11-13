@@ -1,6 +1,6 @@
 const {
     // userRouter,
-    // servicesRouter,
+    servicesRouter,
     authRouter,
     noticesRouter,
     newsRouter,
@@ -10,6 +10,6 @@ module.exports = {
     authRouter,
     // userRouter,
     noticesRouter,
-    // servicesRouter,
+    servicesRouter,
     newsRouter,
 };
