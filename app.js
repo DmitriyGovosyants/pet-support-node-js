@@ -4,9 +4,12 @@ const cors = require('cors');
 require('dotenv').config();
 
 const {
-  // authRouter, userRouter, noticesRouter, servicesRouter,
-  newsRouter } = require('./routes')
-const authRouter = require('./routes/api/auth');
+  // userRouter,
+  // servicesRouter,
+  authRouter,
+  noticesRouter,
+  newsRouter,
+} = require('./routes');
 
 const { errorHandler } = require('./helpers/errorHandler');
 
@@ -22,9 +25,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/auth', authRouter);
 // app.use('/api/user', userRouter)
-// app.use('/api/notices', noticesRouter)
+app.use('/api/notices', noticesRouter);
 // app.use('/api/services', servicesRouter)
-app.use('/api/news', newsRouter)
+app.use('/api/news', newsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });

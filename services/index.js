@@ -6,6 +6,8 @@ const {
   updateUser,
 } = require('./userService');
 const { login, logout } = require('./authService.js');
+const uploadService = require('./uploadService');
+const noticeService = require('./noticeService');
 
 module.exports = {
   createUser,
@@ -15,4 +17,6 @@ module.exports = {
   updateUser,
   login,
   logout,
+  uploadService,
+  noticeService,
 };

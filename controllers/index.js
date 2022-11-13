@@ -1,10 +1,11 @@
+const noticeController = require('./noticeController');
 const {
   registerController,
   loginController,
   logoutController,
   currentUserController,
 } = require('./authController');
-const getNews = require("./getNews")
+const getNews = require('./getNews');
 
 module.exports = {
   registerController,
@@ -12,4 +13,5 @@ module.exports = {
   logoutController,
   currentUserController,
   getNews,
+  noticeController,
 };
