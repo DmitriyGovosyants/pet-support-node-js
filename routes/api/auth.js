@@ -17,7 +17,7 @@ const { authentificate } = require('../../middlewares/authentificate');
 const ctrlWrapper = require('../../helpers/ctrWrapper');
 
 router.post('/signup', regLogValidation, ctrlWrapper(registerController)); //   Регистрация
-router.post('/login', regLogValidation, ctrlWrapper(loginController)); // Вход
+router.post('/login', ctrlWrapper(loginController)); // Вход
 router.get('/logout', authentificate, ctrlWrapper(logoutController)); // Выход
 router.get(
   '/current',
