@@ -4,8 +4,6 @@ const {
   getPetById,
   createPet,
   removePet,
-  updateContact,
-  updateContactStatus,
 } = require('../services/contactsServices');
 
 // Получение всех карточек Pet
