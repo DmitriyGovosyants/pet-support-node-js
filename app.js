@@ -4,9 +4,10 @@ const cors = require('cors');
 require('dotenv').config();
 
 const {
-  // authRouter, userRouter, noticesRouter, 
+  authRouter,
+  // userRouter, noticesRouter,
   servicesRouter, newsRouter } = require('./routes')
-const authRouter = require('./routes/api/auth');
+// const authRouter = require('./routes/api/auth');
 
 const { errorHandler } = require('./helpers/errorHandler');
 

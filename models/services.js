@@ -17,9 +17,13 @@ const servicesShema = new Schema({
         type: String,
         required: 'Description can\'t be empty',
     },
-    workDays: {
-        type: String,
-    },
+    workDays:
+        [
+            {
+                id: Number,
+                name: String,
+            },
+        ],
     phone: {},
     email: {}
 }, {
