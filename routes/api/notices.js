@@ -8,8 +8,14 @@ const { upload, ctrlWrapper } = require('../../helpers');
 const { noticeController } = require('../../controllers');
 const router = express.Router();
 
-const { getNoticesByCategory, getNoticeByID, addNotice, addToFavorite } =
-  noticeController;
+const {
+  getNoticesByCategory,
+  getNoticeByID,
+  getFavoriteNotices,
+  addNotice,
+  addToFavorite,
+  deleteFromFavorite,
+} = noticeController;
 
 router.get('/', ctrlWrapper(getNoticesByCategory));
 
@@ -22,9 +28,11 @@ router.post(
   ctrlWrapper(addNotice)
 );
 
-router.get('/:noticeID', ctrlWrapper(getNoticeByID));
+router.get('/favorites', authentificate, ctrlWrapper(getFavoriteNotices));
 
-router.get('/favorites', ctrlWrapper());
+router.get('/private', ctrlWrapper());
+
+router.get('/:noticeID', ctrlWrapper(getNoticeByID));
 
 router.patch(
   '/favorites/:noticeID',
@@ -32,9 +40,11 @@ router.patch(
   ctrlWrapper(addToFavorite)
 );
 
-router.delete('/favorites/:noticeID', ctrlWrapper());
-
-router.get('/private', ctrlWrapper());
+router.delete(
+  '/favorites/:noticeID',
+  authentificate,
+  ctrlWrapper(deleteFromFavorite)
+);
 
 router.delete('/private', ctrlWrapper());
 

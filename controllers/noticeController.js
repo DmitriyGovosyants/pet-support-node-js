@@ -3,12 +3,11 @@ const { noticeService } = require('../services');
 const {
   getByCategory,
   getByID,
-  getByTitle,
   addByCategory,
+  getFavorites,
   addToFavoriteByNoticeID,
+  deleteToFavoriteByNoticeID,
 } = noticeService;
-
-// const testUserID = '636fd647c0dbe421f3f77338';
 
 const getNoticesByCategory = async (req, res, next) => {
   const { page, limit = 10, category } = req.query;
@@ -73,20 +72,49 @@ const addNotice = async (req, res, next) => {
   });
 };
 
+const getFavoriteNotices = async (req, res, next) => {
+  const user = req.user;
+  const result = await getFavorites(user._id);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      favoriteNotices: result,
+    },
+  });
+};
+
 const addToFavorite = async (req, res, next) => {
   const user = req.user;
   const { noticeID } = req.params;
   const result = await addToFavoriteByNoticeID(user._id, noticeID);
-  if (result) {
-    res.status(200).json({
-      status: 'success',
-      message: 'Added to favorite',
-    });
-  } else {
+  if (result === '409') {
     res.status(409).json({
       status: 'failed',
       message: 'Already added',
     });
+    return;
+  }
+  if (result) {
+    res.status(200).json({
+      status: 'success',
+      message: 'Added to favorites',
+    });
+  } else {
+    next();
+  }
+};
+
+const deleteFromFavorite = async (req, res, next) => {
+  const user = req.user;
+  const { noticeID } = req.params;
+  const result = await deleteToFavoriteByNoticeID(user._id, noticeID);
+  if (result) {
+    res.status(200).json({
+      status: 'success',
+      message: 'Deleted from favorites',
+    });
+  } else {
+    next();
   }
 };
 
@@ -94,5 +122,7 @@ module.exports = {
   getNoticesByCategory,
   getNoticeByID,
   addNotice,
+  getFavoriteNotices,
   addToFavorite,
+  deleteFromFavorite,
 };
