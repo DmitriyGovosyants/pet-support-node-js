@@ -26,6 +26,7 @@ const regLogUserSchema = Joi.object({
     .required(),
   password: Joi.string()
     .pattern(/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{7,})\S$/)
+    .max(32)
     .required(),
   phone: Joi.string()
     .pattern(/^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/)
