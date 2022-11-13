@@ -3,17 +3,15 @@ const Joi = require('joi');
 
 // Схема валидации регистрации и логина юзера
 const regLogUserSchema = Joi.object({
-  name: Joi.string().alphanum().min(7).max(16).required(),
-  sity: Joi.string().alphanum().min(4).max(20).required(),
+  name: Joi.string().required(),
+  sity: Joi.string().required(),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
       tlds: { allow: ['com', 'net', 'org', 'ua', 'ru', 'gov', 'ca'] },
     })
     .required(),
-  password: Joi.string()
-    .pattern(/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/)
-    .required(),
+  password: Joi.string().alphanum().min(7).max(32).required(),
   phone: Joi.string()
     .pattern(/^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/)
     .required(),
