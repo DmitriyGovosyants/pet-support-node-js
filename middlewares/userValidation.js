@@ -1,5 +1,7 @@
 // Мидлвар для валидации
-const Joi = require('joi');
+const JoiImport = require('joi');
+const JoiDate = require('@joi/date');
+const Joi = JoiImport.extend(JoiDate);
 
 // Схема валидации регистрации и логина юзера
 const regLogUserSchema = Joi.object({
