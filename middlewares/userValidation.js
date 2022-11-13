@@ -3,15 +3,31 @@ const Joi = require('joi');
 
 // Схема валидации регистрации и логина юзера
 const regLogUserSchema = Joi.object({
-  name: Joi.string().required(),
-  city: Joi.string().required(),
+  name: Joi.string()
+    .regex(/^[a-zA-Z\s]*$/)
+    .messages({
+      'string.pattern.base': 'Name should have only letters',
+    }),
+  city: Joi.string()
+    .regex(/^[a-zA-Z]+, [a-zA-Z]+$/)
+    .messages({
+      'string.pattern.base': 'You should type in City, Region',
+    }),
+  birthdate: Joi.date().format('DD-MM-YYYY').raw().max('now').messages({
+    'date.format': ' Please, type in DD-MM-YYYY format',
+  }),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
       tlds: { allow: ['com', 'net', 'org', 'ua', 'ru', 'gov', 'ca'] },
     })
     .required(),
-  password: Joi.string().alphanum().min(7).max(32).required(),
+  password: Joi.string()
+    .pattern(
+      /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=.*[!@#$%^&*])(?=\S*?[0-9]).{7,})\S$/
+    )
+    .trim()
+    .required(),
   phone: Joi.string()
     .pattern(/^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/)
     .required(),
