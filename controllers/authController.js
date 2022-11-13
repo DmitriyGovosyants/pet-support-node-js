@@ -29,17 +29,18 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
   const token = await login(req.body);
 
-  if (token) {
-    const { email } = await findUserByEmail(req.body.email);
-    res.status(200).json({
-      token,
-      data: {
-        email,
-      },
+  if (!token) {
+    res.status(401).json({
+      message: 'Email or password is wrong',
     });
+    return;
   }
-  res.status(401).json({
-    message: 'Email or password is wrong',
+  const { email } = await findUserByEmail(req.body.email);
+  res.status(200).json({
+    token,
+    data: {
+      email,
+    },
   });
 };
 

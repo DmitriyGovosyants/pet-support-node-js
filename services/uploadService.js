@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const { BASE_URL } = process.env;
 
-const setImage = async (name, filename, destination) => {
+const uploadService = async (name, filename, destination) => {
   const avatarName = `${name}_avatar.png`;
   jimp
     .read(`./tmp/${filename}`)
@@ -24,4 +24,4 @@ const setImage = async (name, filename, destination) => {
   return avatarURL;
 };
 
-module.exports = setImage;
+module.exports = uploadService;
