@@ -1,8 +1,14 @@
 const { noticeService } = require('../services');
 
-const { getByCategory, getByID, getByTitle, addByCategory } = noticeService;
+const {
+  getByCategory,
+  getByID,
+  getByTitle,
+  addByCategory,
+  addToFavoriteByNoticeID,
+} = noticeService;
 
-const testUserID = '636fac344bd522a48c435578';
+const testUserID = '636fd647c0dbe421f3f77338';
 
 const getNoticesByCategory = async (req, res, next) => {
   const { page, limit = 10, category } = req.query;
@@ -16,7 +22,6 @@ const getNoticesByCategory = async (req, res, next) => {
   if (results.length === 0) {
     next();
   }
-  console.log(results);
   if (results && results.length < 10) {
     res.json({
       status: 'success',
@@ -47,7 +52,8 @@ const getNoticeByID = async (req, res, next) => {
   });
 };
 
-const createNotice = async (req, res, next) => {
+const addNotice = async (req, res, next) => {
+  const user = req.user;
   const notice = req.body;
   const avatarURL = req.avatarURL;
   const findNotice = await getByTitle(notice.title);
@@ -67,4 +73,26 @@ const createNotice = async (req, res, next) => {
   });
 };
 
-module.exports = { getNoticesByCategory, getNoticeByID, createNotice };
+const addToFavorite = async (req, res, next) => {
+  const user = req.user;
+  const { noticeID } = req.params;
+  const result = await addToFavoriteByNoticeID(testUserID, noticeID);
+  if (result) {
+    res.status(200).json({
+      status: 'success',
+      message: 'Added to favorite',
+    });
+  } else {
+    res.status(409).json({
+      status: 'failed',
+      message: 'Already added',
+    });
+  }
+};
+
+module.exports = {
+  getNoticesByCategory,
+  getNoticeByID,
+  addNotice,
+  addToFavorite,
+};

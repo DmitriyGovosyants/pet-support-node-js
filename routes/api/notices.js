@@ -8,28 +8,29 @@ const { upload } = require('../../helpers');
 const { noticeController } = require('../../controllers');
 const router = express.Router();
 
-const { getNoticesByCategory, getNoticeByID, createNotice } = noticeController;
+const { getNoticesByCategory, getNoticeByID, addNotice, addToFavorite } =
+  noticeController;
 
-//створити ендпоінт для отримання оголошень по категоріям
+//створити ендпоінт для отримання оголошень по категоріям - DONE
 router.get('/', errorHandler(getNoticesByCategory));
 
-//створити ендпоінт для додавання оголошень відповідно до обраної категорії
+//створити ендпоінт для додавання оголошень відповідно до обраної категорії - DONE
 router.post(
   '/',
   upload.single('avatar'),
   noticeValidation,
   fileLoader,
-  errorHandler(createNotice)
+  errorHandler(addNotice)
 );
 
-//створити ендпоінт для отримання одного оголошення
+//створити ендпоінт для отримання одного оголошення - DONE
 router.get('/:noticeID', errorHandler(getNoticeByID));
 
 //створити ендпоінт для отримання оголошень авторизованого користувача доданих ним же в обрані
 router.get('/favorites', errorHandler());
 
-//створити ендпоінт для додавання оголошення до обраних
-router.patch('/favorites/:noticeID', errorHandler());
+//створити ендпоінт для додавання оголошення до обраних - DONE
+router.patch('/favorites/:noticeID', errorHandler(addToFavorite));
 
 //створити ендпоінт для видалення оголошення авторизованого користувача доданих цим же до обраних
 router.delete('/favorites/:noticeID', errorHandler());
