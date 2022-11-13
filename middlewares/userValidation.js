@@ -15,8 +15,8 @@ const regLogUserSchema = Joi.object({
     .messages({
       'string.pattern.base': 'You should type in City, Region',
     }),
-  birthdate: Joi.date().format('DD-MM-YYYY').raw().max('now').messages({
-    'date.format': ' Please, type in DD-MM-YYYY format',
+  birthdate: Joi.date().format('DD.MM.YYYY').raw().max('now').messages({
+    'date.format': ' Please, type in DD.MM.YYYY format',
   }),
   email: Joi.string()
     .email({
@@ -25,9 +25,9 @@ const regLogUserSchema = Joi.object({
     })
     .required(),
   password: Joi.string()
-    .pattern(
-      /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=.*[!@#$%^&*])(?=\S*?[0-9]).{7,})\S$/
-    )
+    .pattern(/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=.*[!@#$%^&*])(?=\S*?[0-9]))\S$/)
+    .min(7)
+    .max(32)
     .trim()
     .required(),
   phone: Joi.string()
@@ -40,7 +40,6 @@ const regLogUserSchema = Joi.object({
 // (?=.*[a-z]) - строка содержит хотя бы одну латинскую букву в нижнем регистре;
 // (?=.*[A-Z]) - строка содержит хотя бы одну латинскую букву в верхнем регистре;
 // [0-9a-zA-Z!@#$%^&*]{6,} - строка состоит не менее, чем из 6 символов.
-
 // Мидлвар для обработки ошибок валидации body
 const validate = (schema, res, req, next) => {
   const validationBody = schema.validate(req.body);
