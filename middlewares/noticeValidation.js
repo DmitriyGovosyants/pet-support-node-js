@@ -8,7 +8,8 @@ const noticeValidation = (req, res, next) => {
       .valid('lost/found', 'in good hands', 'sell')
       .messages({
         'any.only': 'You can choose only from 3 categories',
-      }),
+      })
+      .required(),
     title: Joi.string()
       .regex(/^[a-zA-Z\s]*$/)
       .min(2)
@@ -21,33 +22,42 @@ const noticeValidation = (req, res, next) => {
       .regex(/^[a-zA-Z\s]*$/)
       .min(2)
       .max(16)
+      .allow(null, '')
       .messages({
         'string.min': 'Name should have a minimum length of {#limit}',
         'string.max': 'Name should have a maximum length of {#limit}',
         'string.pattern.base': 'Name should have only letters',
       }),
-    birthdate: Joi.date().format('DD-MM-YYYY').raw().max('now').messages({
-      'date.format': ' Please, type in DD-MM-YYYY format',
-    }),
+    birthdate: Joi.date()
+      .format('DD-MM-YYYY')
+      .raw()
+      .max('now')
+      .allow(null, '')
+      .messages({
+        'date.format': ' Please, type in DD-MM-YYYY format',
+      }),
     breed: Joi.string()
       .regex(/^[a-zA-Z\s]*$/)
       .min(2)
       .max(24)
+      .allow(null, '')
       .messages({
         'string.min': 'Breed should have a minimum length of {#limit}',
         'string.max': 'Breed should have a maximum length of {#limit}',
         'string.pattern.base': 'Breed should have only letters',
       }),
-    sex: Joi.string().valid('male', 'female').messages({
+    sex: Joi.string().valid('male', 'female').required().messages({
       'any.only': 'You can choose only male or female',
     }),
     location: Joi.string()
       .regex(/^[a-zA-Z]+, [a-zA-Z]+$/)
+      .allow(null, '')
       .messages({
         'string.pattern.base': 'You should type in City, Region',
       }),
     price: Joi.string()
       .regex(/^[1-9][0-9]*$/)
+      .required()
       .messages({
         'string.pattern.base': "Price couldn't start from 0",
       }),
