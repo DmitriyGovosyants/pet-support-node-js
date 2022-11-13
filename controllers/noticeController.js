@@ -56,14 +56,14 @@ const addNotice = async (req, res, next) => {
   const user = req.user;
   const notice = req.body;
   const avatarURL = req.avatarURL;
-  const findNotice = await getByTitle(notice.title);
-  if (findNotice) {
-    res.status(409).json({
-      status: 'failed',
-      message: 'Already exists',
-    });
-    return;
-  }
+  // const findNotice = await getByTitle(notice.title);
+  // if (findNotice) {
+  //   res.status(409).json({
+  //     status: 'failed',
+  //     message: 'Already exists',
+  //   });
+  //   return;
+  // }
   const result = await addByCategory(user._id, notice, avatarURL);
   res.status(201).json({
     status: 'success',
