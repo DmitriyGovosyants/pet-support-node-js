@@ -1,5 +1,12 @@
 const { Services } = require('./services')
+const User = require('./users');
+const Pets = require('./pets');
+const { News } = require('./news')
 
 module.exports = {
-    Services,
-}
+  User,
+  Pets,
+  News,
+  Services,
+};
+

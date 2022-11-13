@@ -1,5 +1,18 @@
 const getServices = require('./getServices')
+const {
+  registerController,
+  loginController,
+  logoutController,
+  currentUserController,
+} = require('./authController');
+const getNews = require("./getNews")
 
 module.exports = {
-    getServices,
-}
+  registerController,
+  loginController,
+  logoutController,
+  currentUserController,
+  getServices,
+  getNews,
+};
+
