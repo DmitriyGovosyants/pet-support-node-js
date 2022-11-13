@@ -1,15 +1,15 @@
 const {
-  // userRouter,
-  // servicesRouter,
-  authRouter,
-  noticesRouter,
-  newsRouter,
+    // userRouter,
+    servicesRouter,
+    authRouter,
+    noticesRouter,
+    newsRouter,
 } = require('./api');
 
 module.exports = {
-  authRouter,
-  // userRouter,
-  noticesRouter,
-  // servicesRouter,
-  newsRouter,
+    authRouter,
+    // userRouter,
+    noticesRouter,
+    servicesRouter,
+    newsRouter,
 };
