@@ -1,5 +1,11 @@
+const { authentificate } = require('./authentificate');
+const { regLogValidation } = require('./userValidation');
 const noticeValidation = require('./noticeValidation');
-const errorHandler = require('./errorHandler');
 const fileLoader = require('./fileLoader');
 
-module.exports = { noticeValidation, errorHandler, fileLoader };
+module.exports = {
+  authentificate,
+  regLogValidation,
+  noticeValidation,
+  fileLoader,
+};

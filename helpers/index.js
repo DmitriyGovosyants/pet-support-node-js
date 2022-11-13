@@ -1,3 +1,9 @@
+const ctrlWrapper = require('./ctrWrapper');
+const { errorHandler } = require('./errorHandler');
 const upload = require('./storage');
 
-module.exports = { upload };
+module.exports = {
+  ctrlWrapper,
+  errorHandler,
+  upload,
+};

@@ -1,4 +1,11 @@
-const Notice = require('./notices');
 const User = require('./users');
+const Pets = require('./pets');
+const { News } = require('./news');
+const Notice = require('./notices');
 
-module.exports = { Notice, User };
+module.exports = {
+  User,
+  Pets,
+  News,
+  Notice,
+};

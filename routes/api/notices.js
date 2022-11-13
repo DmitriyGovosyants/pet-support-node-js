@@ -1,44 +1,41 @@
 const express = require('express');
 const {
   noticeValidation,
-  errorHandler,
+  authentificate,
   fileLoader,
 } = require('../../middlewares');
-const { upload } = require('../../helpers');
+const { upload, ctrlWrapper } = require('../../helpers');
 const { noticeController } = require('../../controllers');
 const router = express.Router();
 
 const { getNoticesByCategory, getNoticeByID, addNotice, addToFavorite } =
   noticeController;
 
-//створити ендпоінт для отримання оголошень по категоріям - DONE
-router.get('/', errorHandler(getNoticesByCategory));
+router.get('/', ctrlWrapper(getNoticesByCategory));
 
-//створити ендпоінт для додавання оголошень відповідно до обраної категорії - DONE
 router.post(
   '/',
+  authentificate,
   upload.single('avatar'),
   noticeValidation,
   fileLoader,
-  errorHandler(addNotice)
+  ctrlWrapper(addNotice)
 );
 
-//створити ендпоінт для отримання одного оголошення - DONE
-router.get('/:noticeID', errorHandler(getNoticeByID));
+router.get('/:noticeID', ctrlWrapper(getNoticeByID));
 
-//створити ендпоінт для отримання оголошень авторизованого користувача доданих ним же в обрані
-router.get('/favorites', errorHandler());
+router.get('/favorites', ctrlWrapper());
 
-//створити ендпоінт для додавання оголошення до обраних - DONE
-router.patch('/favorites/:noticeID', errorHandler(addToFavorite));
+router.patch(
+  '/favorites/:noticeID',
+  authentificate,
+  ctrlWrapper(addToFavorite)
+);
 
-//створити ендпоінт для видалення оголошення авторизованого користувача доданих цим же до обраних
-router.delete('/favorites/:noticeID', errorHandler());
+router.delete('/favorites/:noticeID', ctrlWrapper());
 
-//створити ендпоінт для отримання оголошень авторизованого кристувача створених цим же користувачем
-router.get('/private', errorHandler());
+router.get('/private', ctrlWrapper());
 
-//створити ендпоінт для видалення оголошення авторизованого користувача створеного цим же користувачем
-router.delete('/private', errorHandler());
+router.delete('/private', ctrlWrapper());
 
 module.exports = router;

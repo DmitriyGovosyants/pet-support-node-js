@@ -8,7 +8,7 @@ const {
   addToFavoriteByNoticeID,
 } = noticeService;
 
-const testUserID = '636fd647c0dbe421f3f77338';
+// const testUserID = '636fd647c0dbe421f3f77338';
 
 const getNoticesByCategory = async (req, res, next) => {
   const { page, limit = 10, category } = req.query;
@@ -64,7 +64,7 @@ const addNotice = async (req, res, next) => {
     });
     return;
   }
-  const result = await addByCategory(testUserID, notice, avatarURL);
+  const result = await addByCategory(user._id, notice, avatarURL);
   res.status(201).json({
     status: 'success',
     data: {
@@ -76,7 +76,7 @@ const addNotice = async (req, res, next) => {
 const addToFavorite = async (req, res, next) => {
   const user = req.user;
   const { noticeID } = req.params;
-  const result = await addToFavoriteByNoticeID(testUserID, noticeID);
+  const result = await addToFavoriteByNoticeID(user._id, noticeID);
   if (result) {
     res.status(200).json({
       status: 'success',
