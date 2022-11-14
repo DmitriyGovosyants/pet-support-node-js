@@ -8,7 +8,7 @@ const newsController = async (req, res, next) => {
     const allNews = await News.find({ title: result }, null, {})
 
     if (allNews.length !== 0) {
-        console.log(allNews)
+
         return res.status(200).json({
             status: 'success',
             data: allNews,

@@ -25,4 +25,4 @@ router.get(
   regLogValidation,
   ctrlWrapper(currentUserController)
 ); // Текущий юзер
-router.patch('/:userId', ctrlWrapper(updateUserController)); // Обновление данных юзера
+router.patch('/:userId', authentificate, ctrlWrapper(updateUserController)); // Обновление данных юзера

@@ -66,12 +66,18 @@ const currentUserController = async (req, res) => {
 
 // Обновление данных юзера
 const updateUserController = async (req, res) => {
-  // const { name, email, birthday, phone, sity } = req.body;
-  const user = await updateUser(req.user.id, req.body);
+  const { name, email, phone, birthdate, city } = req.body
+  const user = await updateUser(req.user.id);
 
   if (!user) {
     return res.status(400).json({ message: 'missing fields' });
   } else if (user) {
+    if (name) { user.name = name }
+    if (email) { user.email = email }
+    if (phone) { user.phone = phone }
+    if (birthdate) { user.birthdate = birthdate }
+    if (city) { user.city = city }
+    await createUser(user)
     return res.status(200).json({
       data: {
         user,
@@ -81,28 +87,6 @@ const updateUserController = async (req, res) => {
   }
   res.status(404).json({ message: 'Not found' });
 };
-
-// const updateContactPartial = async (req, res) => {
-//     try {
-//         const { name, email, phone, favorite } = req.body
-//         const { id } = req.params
-//         const contact = await Contact.findByIdAndUpdate(id, req.body, { new: true })
-//         if (!contact) {
-//             return res
-//                 .status(404)
-//                 .json({ message: Contacts with id '${id}' not found })
-//         } else {
-//             if (name) { contact.name = name }
-//             if (email) { contact.email = email }
-//             if (phone) { contact.phone = phone }
-//             if (favorite) { contact.favorite = favorite }
-//         }
-//         await Contact.create(contact)
-//         res.status(201).json(contact);
-//     } catch (error) {
-//         console.log('updateContact', error.message)
-//     }
-// }
 
 module.exports = {
   registerController,
