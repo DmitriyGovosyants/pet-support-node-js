@@ -34,9 +34,9 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-
     notices: [{ type: Schema.Types.ObjectId, ref: 'notices' }],
     favoriteNotices: [{ type: Schema.Types.ObjectId, ref: 'notices' }],
+    pets: [{ type: Schema.Types.ObjectId, ref: 'pets' }],
   },
   { versionKey: false, timestamps: false }
 );

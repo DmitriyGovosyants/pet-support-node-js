@@ -8,8 +8,6 @@ const getByCategory = async (category, skip, limit) =>
     .skip(skip)
     .limit(limit);
 
-const getByTitle = async title => await Notice.findOne({ title: title });
-
 const getByID = async noticeID => {
   if (!isValid(noticeID)) return false;
   return await Notice.findById({ _id: noticeID });
@@ -26,11 +24,21 @@ const addByCategory = async (userID, notice, avatarURL) => {
   }
 };
 
+const getFavorites = async userID => {
+  const user = await User.findOne({ _id: userID }).populate('favoriteNotices');
+  return user.favoriteNotices;
+};
+
+const getPrivates = async userID => {
+  const user = await User.findOne({ _id: userID }).populate('notices');
+  return user.notices;
+};
+
 const addToFavoriteByNoticeID = async (userID, noticeID) => {
-  //? Нужно ли добавлять проверку на валидность ID, так как с фронта он невалидный и не может прийти
+  if (!isValid(noticeID)) return false;
   const { favoriteNotices } = await User.findOne({ _id: userID });
   if (favoriteNotices.includes(ObjectId(noticeID))) {
-    return false;
+    return '409';
   }
   return await User.findByIdAndUpdate(
     { _id: userID },
@@ -38,10 +46,37 @@ const addToFavoriteByNoticeID = async (userID, noticeID) => {
   );
 };
 
+const deleteFromFavoriteByNoticeID = async (userID, noticeID) => {
+  if (!isValid(noticeID)) return false;
+  const { favoriteNotices } = await User.findOne({ _id: userID });
+  if (!favoriteNotices.includes(ObjectId(noticeID))) {
+    return false;
+  }
+  return await User.findByIdAndUpdate(
+    { _id: userID },
+    { $pull: { favoriteNotices: noticeID } }
+  );
+};
+
+const deleteFromPrivateByNoticeID = async (userID, noticeID) => {
+  if (!isValid(noticeID)) return false;
+  const { notices } = await User.findOne({ _id: userID });
+  if (!notices.includes(ObjectId(noticeID))) {
+    return false;
+  }
+  return await User.findByIdAndUpdate(
+    { _id: userID },
+    { $pull: { notices: noticeID } }
+  );
+};
+
 module.exports = {
   getByCategory,
   getByID,
-  getByTitle,
   addByCategory,
+  getFavorites,
+  getPrivates,
   addToFavoriteByNoticeID,
+  deleteFromFavoriteByNoticeID,
+  deleteFromPrivateByNoticeID,
 };

@@ -11,7 +11,7 @@ const noticeValidation = (req, res, next) => {
       })
       .required(),
     title: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-Zа-яА-Я\s]*$/)
       .min(2)
       .max(48)
       .required()
@@ -19,7 +19,7 @@ const noticeValidation = (req, res, next) => {
         'string.pattern.base': 'Title should have only letters',
       }),
     name: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-Zа-яА-Я\s]*$/)
       .min(2)
       .max(16)
       .allow(null, '')
@@ -37,7 +37,7 @@ const noticeValidation = (req, res, next) => {
         'date.format': ' Please, type in DD-MM-YYYY format',
       }),
     breed: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-Zа-яА-Я\s]*$/)
       .min(2)
       .max(24)
       .allow(null, '')
@@ -50,7 +50,7 @@ const noticeValidation = (req, res, next) => {
       'any.only': 'You can choose only male or female',
     }),
     location: Joi.string()
-      .regex(/^[a-zA-Z]+, [a-zA-Z]+$/)
+      .regex(/^[a-zA-Zа-яА-Я]+, [a-zA-Zа-яА-Я]+$/)
       .allow(null, '')
       .messages({
         'string.pattern.base': 'You should type in City, Region',
@@ -62,10 +62,13 @@ const noticeValidation = (req, res, next) => {
         'string.pattern.base': "Price couldn't start from 0",
       }),
     avatarURL: Joi.string(),
-    comments: Joi.string().min(8).max(120).required().messages({
-      'string.min': 'Comments should have a minimum length of {#limit}',
-      'string.max': 'Comments should have a maximum length of {#limit}',
-    }),
+    comments: Joi.string()
+      .regex(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\s]{8,120}$/)
+      .required()
+      .messages({
+        'string.min': 'Comments should have a minimum length of {#limit}',
+        'string.max': 'Comments should have a maximum length of {#limit}',
+      }),
   });
   const validation = schema.validate(req.body);
   if (validation.error) {

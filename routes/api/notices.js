@@ -8,10 +8,22 @@ const { upload, ctrlWrapper } = require('../../helpers');
 const { noticeController } = require('../../controllers');
 const router = express.Router();
 
-const { getNoticesByCategory, getNoticeByID, addNotice, addToFavorite } =
-  noticeController;
+const {
+  getNoticesByCategory,
+  getNoticeByID,
+  getFavoriteNotices,
+  getPrivateNotices,
+  addNotice,
+  addToFavorite,
+  deleteFromFavorite,
+  deleteFromPrivate,
+} = noticeController;
 
 router.get('/', ctrlWrapper(getNoticesByCategory));
+
+router.get('/info', ctrlWrapper(getNoticesByCategory));
+
+router.put('/info', ctrlWrapper(getNoticesByCategory));
 
 router.post(
   '/',
@@ -22,9 +34,11 @@ router.post(
   ctrlWrapper(addNotice)
 );
 
-router.get('/:noticeID', ctrlWrapper(getNoticeByID));
+router.get('/favorites', authentificate, ctrlWrapper(getFavoriteNotices));
 
-router.get('/favorites', ctrlWrapper());
+router.get('/private', authentificate, ctrlWrapper(getPrivateNotices));
+
+router.get('/:noticeID', ctrlWrapper(getNoticeByID));
 
 router.patch(
   '/favorites/:noticeID',
@@ -32,10 +46,16 @@ router.patch(
   ctrlWrapper(addToFavorite)
 );
 
-router.delete('/favorites/:noticeID', ctrlWrapper());
+router.delete(
+  '/favorites/:noticeID',
+  authentificate,
+  ctrlWrapper(deleteFromFavorite)
+);
 
-router.get('/private', ctrlWrapper());
-
-router.delete('/private', ctrlWrapper());
+router.delete(
+  '/private/:noticeID',
+  authentificate,
+  ctrlWrapper(deleteFromPrivate)
+);
 
 module.exports = router;
