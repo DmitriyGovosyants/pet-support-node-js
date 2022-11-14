@@ -29,6 +29,11 @@ const getFavorites = async userID => {
   return user.favoriteNotices;
 };
 
+const getPrivates = async userID => {
+  const user = await User.findOne({ _id: userID }).populate('notices');
+  return user.notices;
+};
+
 const addToFavoriteByNoticeID = async (userID, noticeID) => {
   if (!isValid(noticeID)) return false;
   const { favoriteNotices } = await User.findOne({ _id: userID });
@@ -41,7 +46,7 @@ const addToFavoriteByNoticeID = async (userID, noticeID) => {
   );
 };
 
-const deleteToFavoriteByNoticeID = async (userID, noticeID) => {
+const deleteFromFavoriteByNoticeID = async (userID, noticeID) => {
   if (!isValid(noticeID)) return false;
   const { favoriteNotices } = await User.findOne({ _id: userID });
   if (!favoriteNotices.includes(ObjectId(noticeID))) {
@@ -53,11 +58,25 @@ const deleteToFavoriteByNoticeID = async (userID, noticeID) => {
   );
 };
 
+const deleteFromPrivateByNoticeID = async (userID, noticeID) => {
+  if (!isValid(noticeID)) return false;
+  const { notices } = await User.findOne({ _id: userID });
+  if (!notices.includes(ObjectId(noticeID))) {
+    return false;
+  }
+  return await User.findByIdAndUpdate(
+    { _id: userID },
+    { $pull: { notices: noticeID } }
+  );
+};
+
 module.exports = {
   getByCategory,
   getByID,
   addByCategory,
   getFavorites,
+  getPrivates,
   addToFavoriteByNoticeID,
-  deleteToFavoriteByNoticeID,
+  deleteFromFavoriteByNoticeID,
+  deleteFromPrivateByNoticeID,
 };

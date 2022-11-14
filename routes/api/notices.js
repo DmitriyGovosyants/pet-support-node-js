@@ -12,12 +12,18 @@ const {
   getNoticesByCategory,
   getNoticeByID,
   getFavoriteNotices,
+  getPrivateNotices,
   addNotice,
   addToFavorite,
   deleteFromFavorite,
+  deleteFromPrivate,
 } = noticeController;
 
 router.get('/', ctrlWrapper(getNoticesByCategory));
+
+router.get('/info', ctrlWrapper(getNoticesByCategory));
+
+router.put('/info', ctrlWrapper(getNoticesByCategory));
 
 router.post(
   '/',
@@ -30,7 +36,7 @@ router.post(
 
 router.get('/favorites', authentificate, ctrlWrapper(getFavoriteNotices));
 
-router.get('/private', ctrlWrapper());
+router.get('/private', authentificate, ctrlWrapper(getPrivateNotices));
 
 router.get('/:noticeID', ctrlWrapper(getNoticeByID));
 
@@ -46,6 +52,10 @@ router.delete(
   ctrlWrapper(deleteFromFavorite)
 );
 
-router.delete('/private', ctrlWrapper());
+router.delete(
+  '/private/:noticeID',
+  authentificate,
+  ctrlWrapper(deleteFromPrivate)
+);
 
 module.exports = router;
