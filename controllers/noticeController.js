@@ -106,7 +106,6 @@ const addToFavorite = async (req, res, next) => {
   const user = req.user;
   const { noticeID } = req.params;
   const result = await addToFavoriteByNoticeID(user._id, noticeID);
-  console.log(result);
   if (result === '409') {
     res.status(409).json({
       code: 409,
