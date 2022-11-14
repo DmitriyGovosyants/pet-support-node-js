@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
+const ctrlWrapper = require('../../helpers/ctrWrapper')
 
-const { getNews } = require('../../controllers')
+const { newsController } = require('../../controllers')
 
-router.get('/', getNews)
+router.get('/', ctrlWrapper(newsController))
 
 module.exports = { newsRouter: router }

@@ -5,7 +5,7 @@ const {
   logoutController,
   currentUserController,
 } = require('./authController');
-const getNews = require('./getNews');
+const newsController = require('./newsController');
 const servicesController = require('./servicesController')
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
   logoutController,
   currentUserController,
   servicesController,
-  getNews,
+  newsController,
   noticeController,
 };
 
