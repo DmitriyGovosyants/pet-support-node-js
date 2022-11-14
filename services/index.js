@@ -8,6 +8,7 @@ const {
 const { login, logout } = require('./authService.js');
 const uploadService = require('./uploadService');
 const noticeService = require('./noticeService');
+const petsService = require('./petsService');
 
 module.exports = {
   createUser,
@@ -19,4 +20,5 @@ module.exports = {
   logout,
   uploadService,
   noticeService,
+  petsService,
 };
