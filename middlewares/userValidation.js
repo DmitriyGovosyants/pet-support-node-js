@@ -1,28 +1,47 @@
 // Мидлвар для валидации
-const Joi = require('joi');
+const JoiImport = require('joi');
+const JoiDate = require('@joi/date');
+const Joi = JoiImport.extend(JoiDate);
 
 // Схема валидации регистрации и логина юзера
 const regLogUserSchema = Joi.object({
-  name: Joi.string().required(),
-  city: Joi.string().required(),
+  name: Joi.string()
+    .regex(/^[a-zA-Z\s]*$/)
+    .messages({
+      'string.pattern.base': 'Name should have only letters',
+    }),
+  city: Joi.string()
+    .regex(/^[a-zA-Z]+, [a-zA-Z]+$/)
+    .messages({
+      'string.pattern.base': 'You should type in City, Region',
+    }),
+  birthdate: Joi.date().format('DD.MM.YYYY').raw().max('now').messages({
+    'date.format': ' Please, type in DD.MM.YYYY format',
+  }),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
       tlds: { allow: ['com', 'net', 'org', 'ua', 'ru', 'gov', 'ca'] },
     })
     .required(),
-  password: Joi.string().alphanum().min(7).max(32).required(),
-  phone: Joi.string()
-    .pattern(/^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/)
+  password: Joi.string()
+    .pattern(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
+    .max(32)
     .required(),
+  phone: Joi.string()
+    .pattern(/^(\+[0-9]{12})$/)
+    .required(),
+
 });
 //  Пояснения пароля:
+//* будь-які літери та символи окрім пробілів. мін 7 символів максимум 32 
 // (?=.*[0-9]) - строка содержит хотя бы одно число;
 // (?=.*[!@#$%^&*]) - строка содержит хотя бы один спецсимвол;
 // (?=.*[a-z]) - строка содержит хотя бы одну латинскую букву в нижнем регистре;
 // (?=.*[A-Z]) - строка содержит хотя бы одну латинскую букву в верхнем регистре;
 // [0-9a-zA-Z!@#$%^&*]{6,} - строка состоит не менее, чем из 6 символов.
-
+//* Валідація номера телефона 
+//* ^(\+[0-9]{12})$ - пропускає у форматі знак + і 12 цифр
 // Мидлвар для обработки ошибок валидации body
 const validate = (schema, res, req, next) => {
   const validationBody = schema.validate(req.body);
