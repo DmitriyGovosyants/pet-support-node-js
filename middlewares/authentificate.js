@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken'); // Библиотека для создания токенов
 
-const User = require('../services/userService');
+const User = require('../services');
 
 const { SECRET_KEY } = process.env;
 

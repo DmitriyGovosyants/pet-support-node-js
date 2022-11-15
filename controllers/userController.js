@@ -4,7 +4,8 @@ const {
   getPetById,
   createPet,
   removePet,
-} = require('../services/contactsServices');
+  findUserById,
+} = require('../services');
 
 // Получение всех карточек Pet
 const getPets = async (req, res) => {
@@ -43,9 +44,24 @@ const deletePets = async (req, res) => {
   res.status(200).json({ message: 'pet deleted' });
 };
 
+// Текущий юзер
+const currentUserController = async (req, res) => {
+  const currentUser = await findUserById(req.user.id);
+
+  if (currentUser) {
+    const { email } = currentUser;
+    res.status(200).json({
+      data: {
+        email,
+      },
+    });
+  }
+};
+
 module.exports = {
   getPets,
   getPetsById,
   addPets,
   deletePets,
+  currentUserController,
 };

@@ -1,8 +1,13 @@
-const User = require('../models/users');
+const { User } = require('../models');
+const jwt = require('jsonwebtoken'); // Библиотека для создания токенов
+const { SECRET_KEY } = process.env; // секрет для подписи токена
 
 // Создает нового юзера в базе
 const createUser = async body => {
   const user = await new User(body);
+  const payload = { id: user._id }
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '6h' })
+  user.token = token
   return user.save();
 };
 
@@ -15,7 +20,6 @@ const findUserById = async id => {
 // Находит юзера в базе по email
 const findUserByEmail = async email => {
   const user = await User.findOne({ email });
-  // console.log(user);
   return user;
 };
 
@@ -34,8 +38,8 @@ const updateUser = async (id, body) => {
 
 module.exports = {
   createUser,
-  findUserById,
   findUserByEmail,
   updateToken,
   updateUser,
+  findUserById,
 };

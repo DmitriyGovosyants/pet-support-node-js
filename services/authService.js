@@ -12,8 +12,12 @@ const login = async ({ email, password }) => {
   if (!user || !isValidPassword) {
     return null;
   }
+  //* Если токен есть то возвращаем юзера
+  if (user.token !== 'null') {
+    return user
+  }
   // Если валидные - создаем, подписываем и возвращаем токен с временем жизни
-  const id = user.id;
+  const id = user._id;
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '6h' });
 
@@ -23,6 +27,7 @@ const login = async ({ email, password }) => {
 
 // Выход юзера
 const logout = async id => {
+
   const data = await User.updateToken(id, null);
   return data;
 };

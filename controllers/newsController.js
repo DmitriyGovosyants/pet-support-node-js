@@ -9,7 +9,8 @@ const newsController = async (req, res, next) => {
 
     if (allNews.length !== 0) {
 
-        return res.status(200).json({
+        return res.json({
+            code:200,
             status: 'success',
             data: allNews,
             message: 'Get news success',

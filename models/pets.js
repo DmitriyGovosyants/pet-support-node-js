@@ -15,8 +15,6 @@ const petsSchema = new Schema({
   comments: { type: String, required: [true, 'Set comments for notice'] },
 });
 
-const Pets = mongoose.model('pets', petsSchema);
+const Pet = mongoose.model('pets', petsSchema);
 
-module.exports = Pets;
-
-module.exports = Pets;
+module.exports = Pet;
