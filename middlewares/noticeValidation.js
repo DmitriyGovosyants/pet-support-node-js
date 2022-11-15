@@ -5,7 +5,7 @@ const Joi = JoiImport.extend(JoiDate);
 const noticeValidation = (req, res, next) => {
   const schema = Joi.object({
     category: Joi.string()
-      .valid('lost/found', 'in good hands', 'sell')
+      .valid('lost-found', 'in-good-hands', 'sell')
       .messages({
         'any.only': 'You can choose only from 3 categories',
       })

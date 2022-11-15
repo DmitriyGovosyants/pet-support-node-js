@@ -2,8 +2,11 @@ const { Notice, User } = require('../models');
 const isValid = require('mongoose').Types.ObjectId.isValid;
 const ObjectId = require('mongoose').Types.ObjectId;
 
-const getByCategory = async (category, skip, limit) =>
-  await Notice.find({ category: category })
+const getByCategory = async (category, search, field, skip, limit) =>
+  await Notice.find({
+    category: category,
+    [field]: { $regex: search, $options: 'i' },
+  })
     .select({ __v: 0 })
     .skip(skip)
     .limit(limit);
