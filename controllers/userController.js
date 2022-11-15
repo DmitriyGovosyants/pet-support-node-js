@@ -27,7 +27,8 @@ const getPetsById = async (req, res) => {
 
 // Создание карточки Pet
 const addPets = async (req, res) => {
-  const pet = await createPet(req.user.id, req.body);
+  const avatarURL = req.avatarURL;
+  const pet = await createPet(req.user.id, req.body, avatarURL);
 
   if (!pet) {
     return res.status(400).json({ message: 'missing required name field' });
