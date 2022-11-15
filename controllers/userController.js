@@ -5,12 +5,13 @@ const {
   createPet,
   removePet,
   findUserById,
-} = require('../services');
+} = require('../services/petsService');
 
 // Получение всех карточек Pet
 const getPets = async (req, res) => {
-  console.log(req.query);
+  console.log(req.user.id);
   const pets = await getAllPet(req.user.id, req.query);
+
   res.status(200).json({ pets, status: 'Success' });
 };
 

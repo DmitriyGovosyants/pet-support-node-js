@@ -16,12 +16,12 @@ const addPetSchema = Joi.object({
       'string.pattern.base': 'Name should have only letters',
     }),
   birthdate: Joi.date()
-    .format('DD-MM-YYYY')
+    .format('DD.MM.YYYY')
     .raw()
     .max('now')
     .required()
     .messages({
-      'date.format': ' Please, type in DD-MM-YYYY format',
+      'date.format': ' Please, type in DD.MM.YYYY format',
     }),
   breed: Joi.string()
     .regex(/^[a-zA-Zа-яА-Я\s]*$/)
@@ -33,19 +33,6 @@ const addPetSchema = Joi.object({
       'string.max': 'Breed should have a maximum length of {#limit}',
       'string.pattern.base': 'Breed should have only letters',
     }),
-  sex: Joi.string().valid('male', 'female').messages({
-    'any.only': 'You can choose only male or female',
-  }),
-  place: Joi.string()
-    .regex(/^[a-zA-Zа-яА-Я\s]*$/)
-    .messages({
-      'string.pattern.base': 'You should type in City',
-    }),
-  sell: Joi.string()
-    .regex(/^[1-9][0-9]*$/)
-    .messages({
-      'string.pattern.base': "Sell couldn't start from 0",
-    }),
   avatarURL: Joi.string(),
   comments: Joi.string()
     .regex(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\s]{8,120}$/)
@@ -53,20 +40,6 @@ const addPetSchema = Joi.object({
     .messages({
       'string.min': 'Comments should have a minimum length of {#limit}',
       'string.max': 'Comments should have a maximum length of {#limit}',
-    }),
-  phone: Joi.string()
-    .pattern(/^(\+[0-9]{12})$/)
-    .messages({
-      messages: 'Please, type + and 12 numbers',
-    }),
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: { allow: ['com', 'net', 'org', 'ua', 'ru', 'gov', 'ca'] },
-    })
-    .messages({
-      email:
-        'email must contain a domain name .com, .net, .org, .ua, .ru, .gov, .ca',
     }),
 });
 
