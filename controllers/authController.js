@@ -4,6 +4,7 @@ const {
   updateUser,
   login,
   logout,
+  findUserById,
 } = require('../services');
 
 //  Регистрация юзера
@@ -59,10 +60,13 @@ const logoutController = async (req, res) => {
 // Обновление данных юзера
 const updateUserController = async (req, res) => {
   const { name, email, phone, birthdate, city } = req.body;
-  const user = await updateUser(req.user.id);
-
+  const { id } = req.user;
+  const user = await findUserById(id);
   if (!user) {
-    return res.status(400).json({ message: 'missing fields' });
+    return res.status(400).json({
+      code: 400,
+      message: 'missing fields',
+    });
   } else if (user) {
     if (name) {
       user.name = name;
@@ -79,12 +83,10 @@ const updateUserController = async (req, res) => {
     if (city) {
       user.city = city;
     }
-    await createUser(user);
+    await updateUser(id, user);
     return res.json({
       code: 200,
-      data: {
-        user,
-      },
+      data: user,
       status: 'Success',
     });
   }
