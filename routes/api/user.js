@@ -6,7 +6,7 @@ module.exports = router;
 
 const { currentUserController } = require('../../controllers');
 
-const { petsValidation, regLogValidation } = require('../../middlewares');
+const { petsValidation, authValidation } = require('../../middlewares');
 const { authentificate } = require('../../middlewares/authentificate');
 const ctrlWrapper = require('../../helpers/ctrWrapper');
 
@@ -19,6 +19,6 @@ router.patch('/pets/:petID', authentificate, ctrlWrapper()); // Роут для 
 router.get(
   '/current',
   authentificate,
-  regLogValidation,
+  authValidation,
   ctrlWrapper(currentUserController)
 ); // Текущий юзер

@@ -3,7 +3,7 @@ const {
   findUserByEmail,
   updateUser,
   login,
-  logout
+  logout,
 } = require('../services');
 
 //  Регистрация юзера
@@ -12,17 +12,16 @@ const registerController = async (req, res) => {
   if (user) {
     return res.status(409).json({
       code: 409,
-      message: 'Email in use'
+      message: 'Email in use',
     });
   }
 
-  const email = await createUser(req.body);
+  const newUser = await createUser(req.body);
   res.status(201).json({
     code: 201,
     status: 'success',
-    data: {
-      email: email,
-    },
+    data: newUser,
+
     message: 'Registration success',
   });
 };
@@ -53,7 +52,7 @@ const logoutController = async (req, res) => {
   await logout(req.user.id);
   res.status(204).json({
     code: 204,
-    message: 'No Content'
+    message: 'No Content',
   });
 };
 
@@ -91,7 +90,7 @@ const updateUserController = async (req, res) => {
   }
   res.status(404).json({
     code: 404,
-    message: 'Not found'
+    message: 'Not found',
   });
 };
 

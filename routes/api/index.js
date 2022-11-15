@@ -1,12 +1,12 @@
 const authRouter = require('./auth');
-// const userRouter = require("./user")
+const userRouter = require('./user');
 const noticesRouter = require('./notices');
-const { servicesRouter } = require("./services")
+const { servicesRouter } = require('./services');
 const { newsRouter } = require('./news');
 
 module.exports = {
   authRouter,
-  //   userRouter,
+  userRouter,
   noticesRouter,
   servicesRouter,
   newsRouter,
