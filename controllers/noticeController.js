@@ -12,11 +12,13 @@ const {
 } = noticeService;
 
 const getNoticesByCategory = async (req, res, next) => {
-  const { page, limit = 10, category } = req.query;
+  const { page, limit = 10, category, search, field } = req.query;
   let skip = 0;
   page > 1 ? (skip = (page - 1) * limit) : (skip = 0);
   const results = await getByCategory(
     category,
+    search,
+    field,
     parseInt(skip),
     parseInt(limit)
   );
