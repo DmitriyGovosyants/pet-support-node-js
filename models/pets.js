@@ -1,20 +1,45 @@
-const mongoose = require('mongoose');
-
-const { Schema } = mongoose;
+const { Schema, model } = require('mongoose');
 
 const petsSchema = new Schema({
-  name: String,
-  birthdate: String,
-  breed: String,
-  avatarURL: String,
-  place: String,
-  sex: String,
-  email: String,
-  phone: String,
-  sell: String,
-  comments: { type: String, required: [true, 'Set comments for notice'] },
+  name: {
+    type: String,
+    required: [true, 'Set  name your pet'],
+  },
+  birthdate: {
+    type: String,
+    required: [true, 'Set birthdate your pet'],
+  },
+  breed: {
+    type: String,
+    required: [true, 'Set breed your pet'],
+  },
+  avatarURL: {
+    type: String,
+    default: null,
+  },
+  place: {
+    type: String,
+    default: null,
+  },
+  sex: {
+    type: String,
+    default: null,
+  },
+  email: {
+    type: String,
+    default: null,
+  },
+  phone: {
+    type: String,
+    default: null,
+  },
+  sell: {
+    type: String,
+    default: null,
+  },
+  comments: { type: String, required: [true, 'Set comments for your pet'] },
 });
 
-const Pet = mongoose.model('pets', petsSchema);
+const Pet = model('pets', petsSchema);
 
 module.exports = Pet;
