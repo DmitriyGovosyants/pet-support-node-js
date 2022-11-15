@@ -1,14 +1,13 @@
-const { Services } = require('./services')
+const { Services } = require('./services');
 const User = require('./users');
-const Pets = require('./pets');
+const Pet = require('./pets');
 const { News } = require('./news');
 const Notice = require('./notices');
 
 module.exports = {
   User,
-  Pets,
+  Pet,
   News,
   Services,
   Notice,
 };
-

@@ -4,14 +4,14 @@ const JoiDate = require('@joi/date');
 const Joi = JoiImport.extend(JoiDate);
 
 // Схема валидации регистрации и логина юзера
-const regLogUserSchema = Joi.object({
+const authUserSchema = Joi.object({
   name: Joi.string()
-    .regex(/^[a-zA-Z\s]*$/)
+    .regex(/^[a-zA-Zа-яА-Я\s]*$/)
     .messages({
       'string.pattern.base': 'Name should have only letters',
     }),
   city: Joi.string()
-    .regex(/^[a-zA-Z]+, [a-zA-Z]+$/)
+    .regex(/^[a-zA-Zа-яА-Я]+, [a-zA-Zа-яА-Я]+$/)
     .messages({
       'string.pattern.base': 'You should type in City, Region',
     }),
@@ -22,25 +22,30 @@ const regLogUserSchema = Joi.object({
     .email({
       minDomainSegments: 2,
       tlds: { allow: ['com', 'net', 'org', 'ua', 'ru', 'gov', 'ca'] },
+    }).messages({
+      'email': 'email must contain a domain name .com, .net, .org, .ua, .ru, .gov, .ca',
     })
     .required(),
   password: Joi.string()
     .pattern(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
-    .max(32)
-    .required(),
+    .required()
+    .messages({
+      'password.format': 'Password length should have at 7 to 32 symbol',
+    }),
   phone: Joi.string()
     .pattern(/^(\+[0-9]{12})$/)
-    .required(),
-
+    .required().messages({
+      'messages': 'Please, type + and 12 numbers'
+    }),
 });
 //  Пояснения пароля:
-//* будь-які літери та символи окрім пробілів. мін 7 символів максимум 32 
+//* будь-які літери та символи окрім пробілів. мін 7 символів максимум 32
 // (?=.*[0-9]) - строка содержит хотя бы одно число;
 // (?=.*[!@#$%^&*]) - строка содержит хотя бы один спецсимвол;
 // (?=.*[a-z]) - строка содержит хотя бы одну латинскую букву в нижнем регистре;
 // (?=.*[A-Z]) - строка содержит хотя бы одну латинскую букву в верхнем регистре;
 // [0-9a-zA-Z!@#$%^&*]{6,} - строка состоит не менее, чем из 6 символов.
-//* Валідація номера телефона 
+//* Валідація номера телефона
 //* ^(\+[0-9]{12})$ - пропускає у форматі знак + і 12 цифр
 // Мидлвар для обработки ошибок валидации body
 const validate = (schema, res, req, next) => {
@@ -49,13 +54,16 @@ const validate = (schema, res, req, next) => {
   if (validationBody.error) {
     return res
       .status(400)
-      .json({ message: validationBody.error.message.replace(/"/g, '') });
+      .json({
+        code: 400,
+        message: validationBody.error.message.replace(/"/g, '')
+      });
   }
   next();
 };
 
 module.exports = {
-  regLogValidation: (req, res, next) => {
-    return validate(regLogUserSchema, res, req, next);
+  authValidation: (req, res, next) => {
+    return validate(authUserSchema, res, req, next);
   },
 };

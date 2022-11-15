@@ -1,6 +1,6 @@
 const {
-  createUser,
   findUserById,
+  createUser,
   findUserByEmail,
   updateToken,
   updateUser,
@@ -12,13 +12,13 @@ const petsService = require('./petsService');
 
 module.exports = {
   createUser,
-  findUserById,
   findUserByEmail,
   updateToken,
   updateUser,
   login,
   logout,
   uploadService,
+  findUserById,
   noticeService,
   petsService,
 };

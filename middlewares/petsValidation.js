@@ -53,11 +53,6 @@ const addPetSchema = Joi.object({
   }),
 });
 
-// Схема валидации Id документа
-const schemaId = Joi.object({
-  petID: Joi.objectId(),
-});
-
 // Мидлвар обработки ошибок валидации body
 const validate = (schema, res, req, next) => {
   const validationBody = schema.validate(req.body);
@@ -70,22 +65,8 @@ const validate = (schema, res, req, next) => {
   next();
 };
 
-// Мидлвар обработки ошибок валидации Id
-const validateId = (schema, res, req, next) => {
-  const validationID = schema.validate(req.params);
-  if (validationID.error) {
-    return res
-      .status(400)
-      .json({ message: validationID.error.message.replace(/"/g, '') });
-  }
-  next();
-};
-
 module.exports = {
   petsValidation: (req, res, next) => {
     return validate(addPetSchema, res, req, next);
-  },
-  idValidation: (req, res, next) => {
-    return validateId(schemaId, res, req, next);
   },
 };
