@@ -5,7 +5,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const { Pet, User } = require('../models');
 
 // Получаем все карточки Pet
-const getPets = async userID => {
+const getAllPet = async userID => {
   const user = await User.findOne({ _id: userID }).populate('pets');
   return user.pets;
 };
@@ -18,7 +18,7 @@ const getPetById = async petID => {
 };
 
 // Создает  новую карточку Pet
-const addPet = async (userID, pet, avatarURL) => {
+const createPet = async (userID, pet, avatarURL) => {
   const newPet = await Pet.create({ ...pet, avatarURL: avatarURL });
   const updateUser = await User.findByIdAndUpdate(
     { _id: userID },
@@ -30,7 +30,7 @@ const addPet = async (userID, pet, avatarURL) => {
 };
 
 // Удаляет контакт
-const deleteFromPetsByID = async (userID, petsID) => {
+const removePet = async (userID, petsID) => {
   if (!isValid(petsID)) return false;
   const { pets } = await User.findOne({ _id: userID });
   if (!pets.includes(ObjectId(petsID))) {
@@ -51,9 +51,9 @@ const findUserById = async petID => {
 };
 
 module.exports = {
-  getPets,
+  getAllPet,
   getPetById,
-  addPet,
-  deleteFromPetsByID,
+  createPet,
+  removePet,
   findUserById,
 };
