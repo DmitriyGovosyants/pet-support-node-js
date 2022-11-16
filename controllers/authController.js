@@ -1,10 +1,8 @@
 const {
   createUser,
   findUserByEmail,
-  updateUser,
   login,
   logout,
-  findUserById,
 } = require('../services');
 
 //  Регистрация юзера
@@ -17,11 +15,11 @@ const registerController = async (req, res) => {
     });
   }
 
-  const newUser = await createUser(req.body);
+  const { token, email } = await createUser(req.body);
   res.status(201).json({
     code: 201,
     status: 'success',
-    data: newUser,
+    data: { token, email },
 
     message: 'Registration success',
   });
@@ -57,48 +55,10 @@ const logoutController = async (req, res) => {
   });
 };
 
-// Обновление данных юзера
-const updateUserController = async (req, res) => {
-  const { name, email, phone, birthdate, city } = req.body;
-  const { id } = req.user;
-  const user = await findUserById(id);
-  if (!user) {
-    return res.status(400).json({
-      code: 400,
-      message: 'missing fields',
-    });
-  } else if (user) {
-    if (name) {
-      user.name = name;
-    }
-    if (email) {
-      user.email = email;
-    }
-    if (phone) {
-      user.phone = phone;
-    }
-    if (birthdate) {
-      user.birthdate = birthdate;
-    }
-    if (city) {
-      user.city = city;
-    }
-    await updateUser(id, user);
-    return res.json({
-      code: 200,
-      data: user,
-      status: 'Success',
-    });
-  }
-  res.status(404).json({
-    code: 404,
-    message: 'Not found',
-  });
-};
+
 
 module.exports = {
   registerController,
   loginController,
   logoutController,
-  updateUserController,
 };

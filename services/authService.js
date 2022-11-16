@@ -7,7 +7,6 @@ const { SECRET_KEY } = process.env; // секрет для подписи ток
 const login = async ({ email, password }) => {
   const user = await User.findUserByEmail(email);
   const isValidPassword = await user.validPassword(password);
-
   // Если юзер или пароль не валидные - вщзвращаем null вместо токена
   if (!user || !isValidPassword) {
     return null;
