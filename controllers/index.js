@@ -3,14 +3,13 @@ const {
   registerController,
   loginController,
   logoutController,
-  updateUserController,
 } = require('./authController');
 const {
   getPets,
   getPetsById,
   addPets,
   deletePets,
-  currentUserController,
+  getUserInfo,
 } = require('./userController');
 const newsController = require('./newsController');
 const servicesController = require('./servicesController');
@@ -19,12 +18,11 @@ module.exports = {
   registerController,
   loginController,
   logoutController,
-  updateUserController,
   getPets,
   getPetsById,
   addPets,
   deletePets,
-  currentUserController,
+  getUserInfo,
   servicesController,
   newsController,
   noticeController,

@@ -1,38 +1,63 @@
-const User = require('./userService');
-const jwt = require('jsonwebtoken'); // Библиотека для создания токенов
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const isValid = require('mongoose').Types.ObjectId.isValid;
+
+const { User } = require('../models');
 
 const { SECRET_KEY } = process.env; // секрет для подписи токена
 
-// Логин юзера
-const login = async ({ email, password }) => {
-  const user = await User.findUserByEmail(email);
-  const isValidPassword = await user.validPassword(password);
+// Регистрация юзера
+const registration = async body => {
+  const user = await User.create({ ...body });
+  const payload = {
+    id: user.id,
+    email: user.email,
+  };
+  return await addToken(payload);
+};
 
-  // Если юзер или пароль не валидные - вщзвращаем null вместо токена
-  if (!user || !isValidPassword) {
+// Логин юзера
+const login = async (email, password) => {
+  const user = await User.findOne({ email });
+  if (!user) {
     return null;
   }
-  //* Если токен есть то возвращаем юзера
-  if (user.token !== 'null') {
-    return user
-  }
-  // Если валидные - создаем, подписываем и возвращаем токен с временем жизни
-  const id = user._id;
-  const payload = { id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '6h' });
+  const isValidPassword = await bcrypt.compareSync(password, user.password);
 
-  await User.updateToken(id, token);
-  return token;
+  // Если юзер или пароль не валидные - вщзвращаем null вместо токена
+  if (!isValidPassword) {
+    return null;
+  }
+
+  // Если валидные - создаем, подписываем и возвращаем токен с временем жизни
+  const payload = {
+    id: user.id,
+    email: user.email,
+  };
+  return await addToken(payload);
 };
 
 // Выход юзера
-const logout = async id => {
+const logout = async (id, token) => {
+  return await User.findByIdAndUpdate(id, { $unset: { token: token } });
+};
 
-  const data = await User.updateToken(id, null);
-  return data;
+// Добавить токен
+const addToken = async payload => {
+  const { id } = payload;
+  if (!isValid(id)) return false;
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1d' });
+  const updatedToken = await User.findByIdAndUpdate(
+    { _id: id },
+    { $set: { token: token } },
+    { new: true }
+  );
+  return updatedToken.token;
 };
 
 module.exports = {
+  registration,
   login,
   logout,
+  addToken,
 };
