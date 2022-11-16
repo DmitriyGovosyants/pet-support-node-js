@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const { BASE_URL } = process.env;
 
-const uploadService = async (name, filename, destination) => {
+const addAvatar = async (name, filename, destination) => {
   const avatarName = `${name}_avatar.png`;
   jimp
     .read(`./tmp/${filename}`)
@@ -20,8 +20,14 @@ const uploadService = async (name, filename, destination) => {
     if (err) console.log(err);
     else console.log(`${filename} was deleted`);
   });
-  const avatarURL = `${BASE_URL}/${destination}/${avatarName}`;
-  return avatarURL;
+  return `${BASE_URL}/${destination}/${avatarName}`;
 };
 
-module.exports = uploadService;
+const deleteFile = async filePath => {
+  fs.unlink(`./public/${filePath}`, err => {
+    if (err) console.log(err);
+    else console.log(`${filePath} was deleted`);
+  });
+};
+
+module.exports = { addAvatar, deleteFile };
