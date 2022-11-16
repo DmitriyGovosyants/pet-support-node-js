@@ -5,12 +5,13 @@ const {
   createPet,
   removePet,
   findUserById,
-} = require('../services');
+} = require('../services/petsService');
 
 // Получение всех карточек Pet
 const getPets = async (req, res) => {
-  console.log(req.query);
+  console.log(req.user.id);
   const pets = await getAllPet(req.user.id, req.query);
+
   res.status(200).json({ pets, status: 'Success' });
 };
 
@@ -26,7 +27,8 @@ const getPetsById = async (req, res) => {
 
 // Создание карточки Pet
 const addPets = async (req, res) => {
-  const pet = await createPet(req.user.id, req.body);
+  const avatarURL = req.avatarURL;
+  const pet = await createPet(req.user.id, req.body, avatarURL);
 
   if (!pet) {
     return res.status(400).json({ message: 'missing required name field' });

@@ -5,7 +5,13 @@ const {
   logoutController,
   updateUserController,
 } = require('./authController');
-const { currentUserController } = require('./userController');
+const {
+  getPets,
+  getPetsById,
+  addPets,
+  deletePets,
+  currentUserController,
+} = require('./userController');
 const newsController = require('./newsController');
 const servicesController = require('./servicesController');
 
@@ -14,6 +20,10 @@ module.exports = {
   loginController,
   logoutController,
   updateUserController,
+  getPets,
+  getPetsById,
+  addPets,
+  deletePets,
   currentUserController,
   servicesController,
   newsController,
