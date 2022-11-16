@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken'); // Библиотека для создания токенов
 
-const User = require('../services');
+const { User } = require('../models');
 
 const { SECRET_KEY } = process.env;
 
@@ -13,7 +13,7 @@ const authentificate = async (req, res, next) => {
       return res.status(401).json({ message: 'Not authorized' });
     }
     const { id } = jwt.verify(token, SECRET_KEY);
-    const user = await User.findUserById(id);
+    const user = await User.findById(id);
     if (!user || !user.token) {
       return res.status(401).json({ message: 'Not authorized' });
     }

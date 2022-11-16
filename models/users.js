@@ -51,12 +51,6 @@ userSchema.pre('save', function (next) {
   // }
 });
 
-// Сравнивает пароли при входе юзера (возвращает null если не совпадают)
-userSchema.methods.validPassword = function (password) {
-  const result = bcrypt.compareSync(password, this.password);
-  return result;
-};
-
 const User = mongoose.model('user', userSchema);
 
 module.exports = User;

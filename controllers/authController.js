@@ -1,11 +1,4 @@
-const {
-  createUser,
-  findUserByEmail,
-  updateUser,
-  login,
-  logout,
-  findUserById,
-} = require('../services');
+const { registration, findUserByEmail, login, logout } = require('../services');
 
 //  Регистрация юзера
 const registerController = async (req, res) => {
@@ -16,12 +9,11 @@ const registerController = async (req, res) => {
       message: 'Email in use',
     });
   }
-
-  const newUser = await createUser(req.body);
+  const token = await registration(req.body);
   res.status(201).json({
     code: 201,
     status: 'success',
-    data: newUser,
+    data: { token: token },
 
     message: 'Registration success',
   });
@@ -29,70 +21,31 @@ const registerController = async (req, res) => {
 
 // Вход юзера
 const loginController = async (req, res) => {
-  const { token } = await login(req.body);
+  const { email, password } = req.body;
+  const token = await login(email, password);
 
   if (!token) {
     res.status(401).json({
       code: 401,
-      message: 'Email or password is wrong',
+      message: 'Email or password are wrong',
     });
     return;
   }
-  const { email } = await findUserByEmail(req.body.email);
   res.json({
     code: 200,
     data: {
       token,
-      email,
     },
   });
 };
 
 // Выход юзера
 const logoutController = async (req, res) => {
-  await logout(req.user.id);
-  res.status(204).json({
-    code: 204,
-    message: 'No Content',
-  });
-};
-
-// Обновление данных юзера
-const updateUserController = async (req, res) => {
-  const { name, email, phone, birthdate, city } = req.body;
-  const { id } = req.user;
-  const user = await findUserById(id);
-  if (!user) {
-    return res.status(400).json({
-      code: 400,
-      message: 'missing fields',
-    });
-  } else if (user) {
-    if (name) {
-      user.name = name;
-    }
-    if (email) {
-      user.email = email;
-    }
-    if (phone) {
-      user.phone = phone;
-    }
-    if (birthdate) {
-      user.birthdate = birthdate;
-    }
-    if (city) {
-      user.city = city;
-    }
-    await updateUser(id, user);
-    return res.json({
-      code: 200,
-      data: user,
-      status: 'Success',
-    });
-  }
-  res.status(404).json({
-    code: 404,
-    message: 'Not found',
+  const { id, token } = req.user;
+  await logout(id, token);
+  res.json({
+    code: 200,
+    message: 'Logoout Success',
   });
 };
 
@@ -100,5 +53,4 @@ module.exports = {
   registerController,
   loginController,
   logoutController,
-  updateUserController,
 };

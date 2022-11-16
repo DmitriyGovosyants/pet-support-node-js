@@ -1,24 +1,16 @@
-const {
-  findUserById,
-  createUser,
-  findUserByEmail,
-  updateToken,
-  updateUser,
-} = require('./userService');
-const { login, logout } = require('./authService.js');
+const { findUserByEmail } = require('../services/userService');
+const { registration, login, logout, addToken } = require('./authService.js');
 const uploadService = require('./uploadService');
 const noticeService = require('./noticeService');
 const petsService = require('./petsService');
 
 module.exports = {
-  createUser,
   findUserByEmail,
-  updateToken,
-  updateUser,
+  registration,
   login,
   logout,
+  addToken,
   uploadService,
-  findUserById,
   noticeService,
   petsService,
 };

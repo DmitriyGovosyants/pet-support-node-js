@@ -5,12 +5,13 @@ const router = express.Router();
 module.exports = router;
 
 const {
+  getUserInfo,
   getPets,
   getPetsById,
   addPets,
   deletePets,
   currentUserController,
-} = require('../../controllers/userController');
+} = require('../../controllers');
 
 const {
   petsValidation,
@@ -20,7 +21,7 @@ const {
 const { authentificate } = require('../../middlewares/authentificate');
 const { ctrlWrapper, upload } = require('../../helpers');
 
-router.get('/info', authentificate, ctrlWrapper()); // Роут отримання особистої інфо користувача
+router.get('/info', authentificate, ctrlWrapper(getUserInfo)); // Роут отримання особистої інфо користувача
 router.get('/pets', authentificate, ctrlWrapper(getPets)); // Роут для отримання інфо о тваринах користувача
 router.patch('/info', authentificate, ctrlWrapper()); // Роут для отримання одного із полів інфо користувача
 router.post(

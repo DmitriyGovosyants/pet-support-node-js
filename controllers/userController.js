@@ -7,9 +7,23 @@ const {
   findUserById,
 } = require('../services/petsService');
 
+// Получение информации о юзере
+
+// Текущий юзер
+const getUserInfo = async (req, res) => {
+  const user = await findUserById(req.user.id);
+  console.log(user);
+  if (user) {
+    res.status(200).json({
+      data: {
+        user,
+      },
+    });
+  }
+};
+
 // Получение всех карточек Pet
 const getPets = async (req, res) => {
-  console.log(req.user.id);
   const pets = await getAllPet(req.user.id, req.query);
 
   res.status(200).json({ pets, status: 'Success' });
@@ -46,24 +60,10 @@ const deletePets = async (req, res) => {
   res.status(200).json({ message: 'pet deleted' });
 };
 
-// Текущий юзер
-const currentUserController = async (req, res) => {
-  const currentUser = await findUserById(req.user.id);
-
-  if (currentUser) {
-    const { email } = currentUser;
-    res.status(200).json({
-      data: {
-        email,
-      },
-    });
-  }
-};
-
 module.exports = {
   getPets,
   getPetsById,
   addPets,
   deletePets,
-  currentUserController,
+  getUserInfo,
 };
