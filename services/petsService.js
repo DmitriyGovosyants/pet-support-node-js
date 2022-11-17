@@ -1,5 +1,6 @@
 const isValid = require('mongoose').Types.ObjectId.isValid;
 const ObjectId = require('mongoose').Types.ObjectId;
+const { deleteFile } = require('./uploadService');
 
 // Сервис работы с БД
 const { Pet, User } = require('../models');
@@ -32,14 +33,14 @@ const createPet = async (userID, pet, avatarURL) => {
 // Удаляет контакт
 const removePet = async (userID, petsID) => {
   if (!isValid(petsID)) return false;
-  const { pets } = await User.findOne({ _id: userID });
-  if (!pets.includes(ObjectId(petsID))) {
+  const user = await User.findOne({ _id: userID });
+  if (!user.pets.includes(ObjectId(petsID))) {
     return false;
   }
-  return await User.findByIdAndUpdate(
-    { _id: userID },
-    { $pull: { pets: petsID } }
-  );
+  const { avatarURL } = await Pet.findByIdAndRemove({ _id: petsID });
+  const pathToImage = avatarURL.slice(22, avatarURL.length);
+  await deleteFile(pathToImage);
+  return await user.update({ $pull: { pets: petsID } });
 };
 
 // Находит юзера в базе по id

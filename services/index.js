@@ -1,6 +1,6 @@
 const { findUserByEmail } = require('../services/userService');
 const { registration, login, logout, addToken } = require('./authService.js');
-const uploadService = require('./uploadService');
+const { addAvatar, deleteFile } = require('./uploadService');
 const noticeService = require('./noticeService');
 const petsService = require('./petsService');
 
@@ -10,7 +10,8 @@ module.exports = {
   login,
   logout,
   addToken,
-  uploadService,
+  addAvatar,
+  deleteFile,
   noticeService,
   petsService,
 };
