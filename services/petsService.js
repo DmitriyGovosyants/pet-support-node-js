@@ -14,8 +14,7 @@ const getAllPet = async userID => {
 // Находит карточку Pet по id
 const getPetById = async petID => {
   if (!isValid(petID)) return false;
-  const pet = await Pet.findById(petID);
-  return pet;
+  return await Pet.findById(petID);
 };
 
 // Создает  новую карточку Pet
@@ -23,14 +22,33 @@ const createPet = async (userID, pet, avatarURL) => {
   const newPet = await Pet.create({ ...pet, avatarURL: avatarURL });
   const updateUser = await User.findByIdAndUpdate(
     { _id: userID },
-    { $push: { notices: newPet._id } }
+    { $push: { pets: newPet._id } }
   );
   if (newPet && updateUser) {
     return newPet;
   }
 };
 
-// Удаляет контакт
+// Обновление карточку Pet
+const updatePet = async (petID, info, avatarURL) => {
+  const { name, birthdate, breed, comments } = info;
+  const pet = await Pet.findByIdAndUpdate(
+    { _id: petID },
+    {
+      name: name,
+      birthdate: birthdate,
+      breed: breed,
+      comments: comments,
+      avatarURL: avatarURL,
+    },
+    { new: true }
+  );
+  if (!pet) {
+    return null;
+  }
+  return pet;
+};
+
 const removePet = async (userID, petsID) => {
   if (!isValid(petsID)) return false;
   const user = await User.findOne({ _id: userID });
@@ -43,18 +61,10 @@ const removePet = async (userID, petsID) => {
   return await user.update({ $pull: { pets: petsID } });
 };
 
-// Находит юзера в базе по id
-const findUserById = async petID => {
-  if (!isValid(petID)) return false;
-
-  const user = await User.findById(petID);
-  return user;
-};
-
 module.exports = {
   getAllPet,
   getPetById,
   createPet,
+  updatePet,
   removePet,
-  findUserById,
 };
