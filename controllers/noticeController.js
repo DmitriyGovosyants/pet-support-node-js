@@ -62,7 +62,7 @@ const addNotice = async (req, res, next) => {
   const user = req.user;
   const notice = req.body;
   const avatarURL = req.avatarURL;
-  console.log(avatarURL);
+  
   // const findNotice = await getByTitle(notice.title);
   // if (findNotice) {
   //   res.status(409).json({
