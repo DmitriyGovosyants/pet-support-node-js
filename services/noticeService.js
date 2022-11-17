@@ -1,6 +1,7 @@
 const { Notice, User } = require('../models');
 const isValid = require('mongoose').Types.ObjectId.isValid;
 const ObjectId = require('mongoose').Types.ObjectId;
+const { deleteFile } = require('./uploadService');
 
 const getByCategory = async (category, search, field, skip, limit) =>
   await Notice.find({
@@ -63,14 +64,14 @@ const deleteFromFavoriteByNoticeID = async (userID, noticeID) => {
 
 const deleteFromPrivateByNoticeID = async (userID, noticeID) => {
   if (!isValid(noticeID)) return false;
-  const { notices } = await User.findOne({ _id: userID });
-  if (!notices.includes(ObjectId(noticeID))) {
+  const user = await User.findOne({ _id: userID });
+  if (!user.notices.includes(ObjectId(noticeID))) {
     return false;
   }
-  return await User.findByIdAndUpdate(
-    { _id: userID },
-    { $pull: { notices: noticeID } }
-  );
+  const { avatarURL } = await Notice.findByIdAndRemove({ _id: noticeID });
+  const pathToImage = avatarURL.slice(22, avatarURL.length);
+  await deleteFile(pathToImage);
+  return await user.update({ $pull: { notices: noticeID } });
 };
 
 module.exports = {

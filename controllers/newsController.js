@@ -1,7 +1,7 @@
 const { News } = require('../models');
 
 const newsController = async (req, res, next) => {
-  const { search } = req.query;
+  const { search = /./ } = req.query;
 
   const allNews = await News.find({
     $or: [
