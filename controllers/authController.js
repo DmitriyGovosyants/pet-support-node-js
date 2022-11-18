@@ -40,7 +40,7 @@ const loginController = async (req, res, next) => {
   res.json({
     code: 200,
     data: {
-      result,
+      token: result,
     },
   });
 };
