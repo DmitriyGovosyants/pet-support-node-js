@@ -10,9 +10,9 @@ const {
   logoutController,
 } = require('../../controllers');
 
-const { authValidation, authentificate } = require('../../middlewares');
+const { userValidation, authentificate } = require('../../middlewares');
 const { ctrlWrapper } = require('../../helpers');
 
-router.post('/signup', authValidation, ctrlWrapper(registerController)); //   Регистрация
+router.post('/signup', userValidation, ctrlWrapper(registerController)); //   Регистрация
 router.post('/login', ctrlWrapper(loginController)); // Вход
 router.get('/logout', authentificate, ctrlWrapper(logoutController)); // Выход

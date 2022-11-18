@@ -10,6 +10,8 @@ const {
   addPets,
   deletePets,
   getUserInfo,
+  updateUserInfo,
+  updatePetInfo,
 } = require('./userController');
 const newsController = require('./newsController');
 const servicesController = require('./servicesController');
@@ -23,6 +25,8 @@ module.exports = {
   addPets,
   deletePets,
   getUserInfo,
+  updateUserInfo,
+  updatePetInfo,
   servicesController,
   newsController,
   noticeController,
