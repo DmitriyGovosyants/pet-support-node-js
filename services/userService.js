@@ -16,7 +16,7 @@ const findUserByEmail = async email => {
 };
 
 // Обновление информации юзера
-const updateUser = async (userID, info, avatarURL) => {
+const updateUserInfo = async (userID, info, avatarURL) => {
   const { name, email, birthdate, phone, city } = info;
   const user = await User.findByIdAndUpdate(
     { _id: userID },
@@ -39,5 +39,5 @@ const updateUser = async (userID, info, avatarURL) => {
 module.exports = {
   findUserById,
   findUserByEmail,
-  updateUser,
+  updateUserInfo,
 };

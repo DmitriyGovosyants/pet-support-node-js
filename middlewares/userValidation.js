@@ -7,27 +7,25 @@ const Joi = JoiImport.extend(JoiDate);
 const userSchema = Joi.object({
   name: Joi.string()
     .regex(/^[a-zA-Zа-яА-Я\s]*$/)
+    .required()
     .messages({
       'string.pattern.base': 'Name should have only letters',
     }),
   city: Joi.string()
     .regex(/^[a-zA-Zа-яА-Я]+, [a-zA-Zа-яА-Я]+$/)
+    .required()
     .messages({
       'string.pattern.base': 'You should type in City, Region',
     }),
-  birthdate: Joi.date()
-    .format('DD.MM.YYYY')
-    .raw()
-    .max('now')
-    .allow(null, '')
-    .messages({
-      'date.format': ' Please, type in DD.MM.YYYY format',
-    }),
+  birthdate: Joi.date().format('DD.MM.YYYY').raw().max('now').messages({
+    'date.format': ' Please, type in DD.MM.YYYY format',
+  }),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
       tlds: { allow: ['com', 'net', 'org', 'ua', 'ru', 'gov', 'ca'] },
     })
+    .required()
     .messages({
       'string.base':
         'email must contain a domain name .com, .net, .org, .ua, .ru, .gov, .ca',

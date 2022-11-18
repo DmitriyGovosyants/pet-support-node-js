@@ -24,6 +24,7 @@ const getNoticesByCategory = async (req, res, next) => {
   );
   if (results.length === 0) {
     next();
+    return;
   }
   if (results && results.length < 10) {
     res.json({
