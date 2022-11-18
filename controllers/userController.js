@@ -56,7 +56,7 @@ const addPets = async (req, res) => {
   });
 };
 
-//Обновление карточки Pet
+// Обновление карточки Pet
 
 const updatePetInfo = async (req, res) => {
   const { petID } = req.params;
