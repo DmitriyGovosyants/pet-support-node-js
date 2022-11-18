@@ -30,7 +30,7 @@ const createPet = async (userID, pet, avatarURL) => {
 };
 
 // Обновление карточку Pet
-const updatePet = async (petID, info, avatarURL) => {
+const updatePetInfo = async (petID, info, avatarURL) => {
   const { name, birthdate, breed, comments } = info;
   const pet = await Pet.findByIdAndUpdate(
     { _id: petID },
@@ -56,8 +56,10 @@ const removePet = async (userID, petsID) => {
     return false;
   }
   const { avatarURL } = await Pet.findByIdAndRemove({ _id: petsID });
-  const pathToImage = avatarURL.slice(22, avatarURL.length);
-  await deleteFile(pathToImage);
+  if (avatarURL) {
+    const pathToImage = avatarURL.slice(22, avatarURL.length);
+    await deleteFile(pathToImage);
+  }
   return await user.update({ $pull: { pets: petsID } });
 };
 
@@ -65,6 +67,6 @@ module.exports = {
   getAllPet,
   getPetById,
   createPet,
-  updatePet,
+  updatePetInfo,
   removePet,
 };

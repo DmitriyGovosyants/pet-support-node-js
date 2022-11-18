@@ -23,12 +23,20 @@ const registerController = async (req, res) => {
 // Вход юзера
 const loginController = async (req, res, next) => {
   const { email, password } = req.body;
+  if (!password || !email) {
+    res.status(401).json({
+      code: 401,
+      message: 'Fill in all the fields',
+    });
+    return;
+  }
   const result = await login(email, password);
   if (result === 'invalidEmail') {
     res.status(401).json({
       code: 401,
       message: 'Email is wrong',
     });
+    return;
   }
   if (result === 'invalidPassword') {
     res.status(401).json({
@@ -51,7 +59,7 @@ const logoutController = async (req, res) => {
   await logout(id, token);
   res.json({
     code: 200,
-    message: 'Logoout Success',
+    message: 'Logout Success',
   });
 };
 

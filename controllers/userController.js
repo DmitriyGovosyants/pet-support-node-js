@@ -1,13 +1,13 @@
 // Контроллеры - прописываю логику обработки  маршрута
 const { petsService, userService } = require('../services');
 
-const { getAllPet, createPet, removePet, updatePet } = petsService;
-const { findUserById, updateUser } = userService;
+const { getAllPet, createPet, removePet, updatePetInfo } = petsService;
+const { findUserById, updateUserInfo } = userService;
 
 // Получение информации о юзере
 
 // Текущий юзер
-const getUserInfo = async (req, res) => {
+const getUser = async (req, res) => {
   const user = await findUserById(req.user.id);
   if (user) {
     res.json({
@@ -20,11 +20,11 @@ const getUserInfo = async (req, res) => {
   }
 };
 
-const updateUserInfo = async (req, res) => {
+const updateUser = async (req, res) => {
   const user = req.user;
   const info = req.body;
   const avatarURL = req.avatarURL;
-  const result = await updateUser(user._id, info, avatarURL);
+  const result = await updateUserInfo(user._id, info, avatarURL);
   res.status(201).json({
     code: 201,
     status: 'Success',
@@ -58,11 +58,11 @@ const addPets = async (req, res) => {
 
 //Обновление карточки Pet
 
-const updatePetInfo = async (req, res) => {
+const updatePet = async (req, res) => {
   const { petID } = req.params;
   const info = req.body;
   const avatarURL = req.avatarURL;
-  const result = await updatePet(petID, info, avatarURL);
+  const result = await updatePetInfo(petID, info, avatarURL);
   res.status(201).json({
     code: 201,
     status: 'Success',
@@ -73,7 +73,7 @@ const updatePetInfo = async (req, res) => {
 };
 
 // Удаление карточки Pet
-const deletePets = async (req, res, next) => {
+const deletePet = async (req, res, next) => {
   const result = await removePet(req.user.id, req.params.petID);
 
   if (!result) {
@@ -84,10 +84,10 @@ const deletePets = async (req, res, next) => {
 };
 
 module.exports = {
-  updateUserInfo,
-  updatePetInfo,
+  updateUser,
+  updatePet,
   getPets,
   addPets,
-  deletePets,
-  getUserInfo,
+  deletePet,
+  getUser,
 };

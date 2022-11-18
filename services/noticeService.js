@@ -69,8 +69,10 @@ const deleteFromPrivateByNoticeID = async (userID, noticeID) => {
     return false;
   }
   const { avatarURL } = await Notice.findByIdAndRemove({ _id: noticeID });
-  const pathToImage = avatarURL.slice(22, avatarURL.length);
-  await deleteFile(pathToImage);
+  if (avatarURL) {
+    const pathToImage = avatarURL.slice(22, avatarURL.length);
+    await deleteFile(pathToImage);
+  }
   return await user.update({ $pull: { notices: noticeID } });
 };
 

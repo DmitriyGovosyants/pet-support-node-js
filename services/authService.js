@@ -39,7 +39,10 @@ const login = async (email, password) => {
 
 // Выход юзера
 const logout = async (id, token) => {
-  return await User.findByIdAndUpdate(id, { $unset: { token: token } });
+  return await User.findOneAndUpdate(
+    { _id: id, token: token },
+    { token: null }
+  );
 };
 
 // Добавить токен
