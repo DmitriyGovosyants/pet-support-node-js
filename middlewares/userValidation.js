@@ -4,7 +4,7 @@ const JoiDate = require('@joi/date');
 const Joi = JoiImport.extend(JoiDate);
 
 // Схема валидации регистрации и логина юзера
-const authUserSchema = Joi.object({
+const userSchema = Joi.object({
   name: Joi.string()
     .regex(/^[a-zA-Zа-яА-Я\s]*$/)
     .messages({
@@ -15,28 +15,36 @@ const authUserSchema = Joi.object({
     .messages({
       'string.pattern.base': 'You should type in City, Region',
     }),
-  birthdate: Joi.date().format('DD.MM.YYYY').raw().max('now').messages({
-    'date.format': ' Please, type in DD.MM.YYYY format',
-  }),
+  birthdate: Joi.date()
+    .format('DD.MM.YYYY')
+    .raw()
+    .max('now')
+    .allow(null, '')
+    .messages({
+      'date.format': ' Please, type in DD.MM.YYYY format',
+    }),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
       tlds: { allow: ['com', 'net', 'org', 'ua', 'ru', 'gov', 'ca'] },
-    }).messages({
-      'email': 'email must contain a domain name .com, .net, .org, .ua, .ru, .gov, .ca',
+    })
+    .messages({
+      'string.base':
+        'email must contain a domain name .com, .net, .org, .ua, .ru, .gov, .ca',
     })
     .required(),
   password: Joi.string()
     .pattern(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
-    .required()
     .messages({
-      'password.format': 'Password length should have at 7 to 32 symbol',
+      'string.pattern.base': 'Password length should have at 7 to 32 symbol',
     }),
   phone: Joi.string()
     .pattern(/^(\+[0-9]{12})$/)
-    .required().messages({
-      'messages': 'Please, type + and 12 numbers'
+    .required()
+    .messages({
+      'string.pattern.base': 'Please, type + and 12 numbers',
     }),
+  avatarURL: Joi.string(),
 });
 //  Пояснения пароля:
 //* будь-які літери та символи окрім пробілів. мін 7 символів максимум 32
@@ -52,18 +60,16 @@ const validate = (schema, res, req, next) => {
   const validationBody = schema.validate(req.body);
 
   if (validationBody.error) {
-    return res
-      .status(400)
-      .json({
-        code: 400,
-        message: validationBody.error.message.replace(/"/g, '')
-      });
+    return res.status(400).json({
+      code: 400,
+      message: validationBody.error.message.replace(/"/g, ''),
+    });
   }
   next();
 };
 
 module.exports = {
-  authValidation: (req, res, next) => {
-    return validate(authUserSchema, res, req, next);
+  userValidation: (req, res, next) => {
+    return validate(userSchema, res, req, next);
   },
 };

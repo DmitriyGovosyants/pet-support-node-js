@@ -1,12 +1,12 @@
 const { authentificate } = require('./authentificate');
-const { authValidation } = require('./userValidation');
+const { userValidation } = require('./userValidation');
 const noticeValidation = require('./noticeValidation');
 const fileLoader = require('./fileLoader');
 const { petsValidation } = require('./petsValidation');
 
 module.exports = {
   authentificate,
-  authValidation,
+  userValidation,
   noticeValidation,
   fileLoader,
   petsValidation,

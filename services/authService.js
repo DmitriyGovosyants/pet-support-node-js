@@ -20,13 +20,13 @@ const registration = async body => {
 const login = async (email, password) => {
   const user = await User.findOne({ email });
   if (!user) {
-    return null;
+    return 'invalidEmail';
   }
   const isValidPassword = await bcrypt.compareSync(password, user.password);
 
   // Если юзер или пароль не валидные - вщзвращаем null вместо токена
   if (!isValidPassword) {
-    return null;
+    return 'invalidPassword';
   }
 
   // Если валидные - создаем, подписываем и возвращаем токен с временем жизни

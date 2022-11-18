@@ -1,11 +1,11 @@
-const { findUserByEmail } = require('../services/userService');
+const userService = require('../services/userService');
 const { registration, login, logout, addToken } = require('./authService.js');
 const { addAvatar, deleteFile } = require('./uploadService');
 const noticeService = require('./noticeService');
 const petsService = require('./petsService');
 
 module.exports = {
-  findUserByEmail,
+  userService,
   registration,
   login,
   logout,
