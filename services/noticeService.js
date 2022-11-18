@@ -10,7 +10,8 @@ const getByCategory = async (category, search, field, skip, limit) =>
   })
     .select({ __v: 0 })
     .skip(skip)
-    .limit(limit);
+    .limit(limit)
+    .populate({ path: 'owner', select: 'email phone' });
 
 const getByID = async noticeID => {
   if (!isValid(noticeID)) return false;
@@ -18,7 +19,11 @@ const getByID = async noticeID => {
 };
 
 const addByCategory = async (userID, notice, avatarURL) => {
-  const newNotice = await Notice.create({ ...notice, avatarURL: avatarURL });
+  const newNotice = await Notice.create({
+    ...notice,
+    avatarURL: avatarURL,
+    owner: userID,
+  });
   const updateUser = await User.findByIdAndUpdate(
     { _id: userID },
     { $push: { notices: newNotice._id } }
