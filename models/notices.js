@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const Users = require('./users');
 
 const noticeSchema = new Schema({
   category: {
@@ -40,6 +41,10 @@ const noticeSchema = new Schema({
   comments: {
     type: String,
     required: [true, 'Set comments for notice'],
+  },
+  owner: {
+    type: String,
+    ref: Users,
   },
 });
 

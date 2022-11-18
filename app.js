@@ -24,7 +24,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/auth', authRouter);
-app.use('/api/user', userRouter);
+app.use('/api/users', userRouter);
 app.use('/api/notices', noticesRouter);
 app.use('/api/services', servicesRouter);
 app.use('/api/news', newsRouter);

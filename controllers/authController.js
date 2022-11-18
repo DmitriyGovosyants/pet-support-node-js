@@ -1,4 +1,5 @@
-const { registration, findUserByEmail, login, logout } = require('../services');
+const { userService, registration, login, logout } = require('../services');
+const { findUserByEmail } = userService;
 
 //  Регистрация юзера
 const registerController = async (req, res) => {
@@ -20,21 +21,34 @@ const registerController = async (req, res) => {
 };
 
 // Вход юзера
-const loginController = async (req, res) => {
+const loginController = async (req, res, next) => {
   const { email, password } = req.body;
-  const token = await login(email, password);
-
-  if (!token) {
+  if (!password || !email) {
     res.status(401).json({
       code: 401,
-      message: 'Email or password are wrong',
+      message: 'Fill in all the fields',
+    });
+    return;
+  }
+  const result = await login(email, password);
+  if (result === 'invalidEmail') {
+    res.status(401).json({
+      code: 401,
+      message: 'Email is wrong',
+    });
+    return;
+  }
+  if (result === 'invalidPassword') {
+    res.status(401).json({
+      code: 401,
+      message: 'Password is wrong',
     });
     return;
   }
   res.json({
     code: 200,
     data: {
-      token,
+      token: result,
     },
   });
 };
@@ -45,7 +59,7 @@ const logoutController = async (req, res) => {
   await logout(id, token);
   res.json({
     code: 200,
-    message: 'Logoout Success',
+    message: 'Logout Success',
   });
 };
 

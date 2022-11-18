@@ -24,11 +24,12 @@ const getNoticesByCategory = async (req, res, next) => {
   );
   if (results.length === 0) {
     next();
+    return;
   }
   if (results && results.length < 10) {
     res.json({
       code: 200,
-      status: 'success',
+      status: 'Success',
       data: { notices: results },
       message: 'Notices ended',
     });
@@ -36,7 +37,7 @@ const getNoticesByCategory = async (req, res, next) => {
   }
   res.json({
     code: 200,
-    status: 'success',
+    status: 'Success',
     data: {
       notices: results,
     },
@@ -53,7 +54,7 @@ const getNoticeByID = async (req, res, next) => {
   }
   res.json({
     code: 200,
-    status: 'success',
+    status: 'Success',
     data: { notice: result },
   });
 };
@@ -62,19 +63,10 @@ const addNotice = async (req, res, next) => {
   const user = req.user;
   const notice = req.body;
   const avatarURL = req.avatarURL;
-  
-  // const findNotice = await getByTitle(notice.title);
-  // if (findNotice) {
-  //   res.status(409).json({
-  //     status: 'failed',
-  //     message: 'Already exists',
-  //   });
-  //   return;
-  // }
   const result = await addByCategory(user._id, notice, avatarURL);
   res.status(201).json({
     code: 201,
-    status: 'success',
+    status: 'Success',
     data: {
       notice: result,
     },
@@ -86,7 +78,7 @@ const getFavoriteNotices = async (req, res, next) => {
   const result = await getFavorites(user._id);
   res.json({
     code: 200,
-    status: 'success',
+    status: 'Success',
     data: {
       favoriteNotices: result,
     },
@@ -98,7 +90,7 @@ const getPrivateNotices = async (req, res, next) => {
   const result = await getPrivates(user._id);
   res.json({
     code: 200,
-    status: 'success',
+    status: 'Success',
     data: {
       notices: result,
     },
@@ -120,7 +112,7 @@ const addToFavorite = async (req, res, next) => {
   if (result) {
     res.json({
       code: 200,
-      status: 'success',
+      status: 'Success',
       message: 'Added to favorites',
     });
   } else {
@@ -135,7 +127,7 @@ const deleteFromFavorite = async (req, res, next) => {
   if (result) {
     res.json({
       code: 200,
-      status: 'success',
+      status: 'Success',
       message: 'Deleted from favorites',
     });
   } else {
@@ -150,7 +142,7 @@ const deleteFromPrivate = async (req, res, next) => {
   if (result) {
     res.json({
       code: 200,
-      status: 'success',
+      status: 'Success',
       message: 'Deleted from private',
     });
   } else {

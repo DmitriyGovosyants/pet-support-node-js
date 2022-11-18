@@ -34,6 +34,10 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    avatarURL: {
+      type: String,
+      default: null,
+    },
     notices: [{ type: Schema.Types.ObjectId, ref: 'notices' }],
     favoriteNotices: [{ type: Schema.Types.ObjectId, ref: 'notices' }],
     pets: [{ type: Schema.Types.ObjectId, ref: 'pets' }],
@@ -44,11 +48,7 @@ const userSchema = new Schema(
 // Хук, хеширует и солит пароль перед сохранением в базу
 userSchema.pre('save', function (next) {
   this.password = bcrypt.hashSync(this.password, 10);
-  // this.password = hash;
   next();
-  // if (this.isNew) {
-  //   this.password = bcrypt.hashSync(this.password, 10);
-  // }
 });
 
 const User = mongoose.model('user', userSchema);

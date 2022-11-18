@@ -21,10 +21,6 @@ const {
 
 router.get('/', ctrlWrapper(getNoticesByCategory));
 
-router.get('/info', ctrlWrapper(getNoticesByCategory));
-
-router.put('/info', ctrlWrapper(getNoticesByCategory));
-
 router.post(
   '/',
   authentificate,
