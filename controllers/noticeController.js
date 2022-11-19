@@ -13,7 +13,7 @@ const {
 } = noticeService;
 
 const getNoticesByCategory = async (req, res, next) => {
-  const { page, limit = 10, category, search, field } = req.query;
+  const { page, limit = 12, category, search, field } = req.query;
   let skip = 0;
   page > 1 ? (skip = (page - 1) * limit) : (skip = 0);
   const results = await getByCategory(
@@ -27,7 +27,7 @@ const getNoticesByCategory = async (req, res, next) => {
     next();
     return;
   }
-  if (results && results.length < 10) {
+  if (results && results.length < 12) {
     res.json({
       code: 200,
       status: 'Success',
