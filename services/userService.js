@@ -5,7 +5,7 @@ const { User } = require('../models');
 const findUserById = async petID => {
   if (!isValid(petID)) return false;
 
-  const user = await User.findById(petID);
+  const user = await User.findById(petID).select('-password');
   return user;
 };
 

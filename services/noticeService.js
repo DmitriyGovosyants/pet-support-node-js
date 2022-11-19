@@ -3,7 +3,7 @@ const isValid = require('mongoose').Types.ObjectId.isValid;
 const ObjectId = require('mongoose').Types.ObjectId;
 const { deleteFile } = require('./uploadService');
 
-const getByCategory = async (category, search, field, skip, limit) =>
+const getByCategory = async (category, search, field = 'title', skip, limit) =>
   await Notice.find({
     category: category,
     [field]: { $regex: search, $options: 'i' },

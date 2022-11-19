@@ -7,7 +7,7 @@ const registerController = async (req, res) => {
   if (user) {
     return res.status(409).json({
       code: 409,
-      message: 'Email in use',
+      message: 'Email is invalid',
     });
   }
   const token = await registration(req.body);
