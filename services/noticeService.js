@@ -18,10 +18,9 @@ const getByID = async noticeID => {
   return await Notice.findById({ _id: noticeID });
 };
 
-const addByCategory = async (userID, notice, avatarURL) => {
+const addByCategory = async (userID, notice) => {
   const newNotice = await Notice.create({
     ...notice,
-    avatarURL: avatarURL,
     owner: userID,
   });
   const updateUser = await User.findByIdAndUpdate(
@@ -31,6 +30,20 @@ const addByCategory = async (userID, notice, avatarURL) => {
   if (newNotice && updateUser) {
     return newNotice;
   }
+};
+
+const addNoticeAvatar = async (avatarURL, notice) => {
+  const avatar = await Notice.findByIdAndUpdate(
+    { _id: notice._id },
+    {
+      avatarURL: avatarURL,
+    },
+    { new: true }
+  );
+  if (!avatar) {
+    return null;
+  }
+  return avatar;
 };
 
 const getFavorites = async userID => {
@@ -85,6 +98,7 @@ module.exports = {
   getByCategory,
   getByID,
   addByCategory,
+  addNoticeAvatar,
   getFavorites,
   getPrivates,
   addToFavoriteByNoticeID,

@@ -1,5 +1,6 @@
-const { userService, registration, login, logout } = require('../services');
+const { userService, authService } = require('../services');
 const { findUserByEmail } = userService;
+const { registration, login, logout } = authService;
 
 //  Регистрация юзера
 const registerController = async (req, res) => {

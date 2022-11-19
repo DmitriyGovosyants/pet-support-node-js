@@ -4,6 +4,7 @@ const {
   getByCategory,
   getByID,
   addByCategory,
+  addNoticeAvatar,
   getFavorites,
   getPrivates,
   addToFavoriteByNoticeID,
@@ -62,8 +63,22 @@ const getNoticeByID = async (req, res, next) => {
 const addNotice = async (req, res, next) => {
   const user = req.user;
   const notice = req.body;
+  const newNotice = await addByCategory(user._id, notice);
+  req.result = newNotice;
+  next();
+};
+
+const addAvatar = async (req, res, next) => {
   const avatarURL = req.avatarURL;
-  const result = await addByCategory(user._id, notice, avatarURL);
+  const notice = req.result;
+  const result = await addNoticeAvatar(avatarURL, notice);
+  if (!result) {
+    res.status(500).json({
+      code: 500,
+      status: 'Failed',
+      message: 'Upload avatar failed, try again',
+    });
+  }
   res.status(201).json({
     code: 201,
     status: 'Success',
@@ -154,6 +169,7 @@ module.exports = {
   getNoticesByCategory,
   getNoticeByID,
   addNotice,
+  addAvatar,
   getFavoriteNotices,
   getPrivateNotices,
   addToFavorite,

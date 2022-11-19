@@ -5,7 +5,7 @@ const { User } = require('../models');
 const findUserById = async petID => {
   if (!isValid(petID)) return false;
 
-  const user = await User.findById(petID).select('-password');
+  const user = await User.findById(petID).select('-password, -token');
   return user;
 };
 
@@ -16,9 +16,9 @@ const findUserByEmail = async email => {
 };
 
 // Обновление информации юзера
-const updateUserInfo = async (userID, info, avatarURL) => {
+const updateUserInfo = async (userID, info) => {
   const { name, email, birthdate, phone, city } = info;
-  const user = await User.findByIdAndUpdate(
+  return await User.findByIdAndUpdate(
     { _id: userID },
     {
       name: name,
@@ -26,18 +26,28 @@ const updateUserInfo = async (userID, info, avatarURL) => {
       birthdate: birthdate,
       phone: phone,
       city: city,
+    },
+    { new: true }
+  );
+};
+
+const addUserAvatar = async (avatarURL, user) => {
+  const avatar = await User.findByIdAndUpdate(
+    { _id: user._id },
+    {
       avatarURL: avatarURL,
     },
     { new: true }
   );
-  if (!user) {
+  if (!avatar) {
     return null;
   }
-  return user;
+  return avatar;
 };
 
 module.exports = {
   findUserById,
   findUserByEmail,
   updateUserInfo,
+  addUserAvatar,
 };
