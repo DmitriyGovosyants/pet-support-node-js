@@ -64,8 +64,21 @@ const logoutController = async (req, res) => {
   });
 };
 
+// Проверка текущего юзера
+const currentController = async (req, res) => {
+  const { token } = req.user;
+  if (!token) {
+    return;
+  }
+  res.json({
+    code: 200,
+    message: 'User confirmed',
+  });
+};
+
 module.exports = {
   registerController,
   loginController,
   logoutController,
+  currentController,
 };
