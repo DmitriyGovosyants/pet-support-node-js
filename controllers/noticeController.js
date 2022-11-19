@@ -4,6 +4,7 @@ const {
   getByCategory,
   getByID,
   addByCategory,
+  addNoticeAvatar,
   getFavorites,
   getPrivates,
   addToFavoriteByNoticeID,
@@ -12,7 +13,7 @@ const {
 } = noticeService;
 
 const getNoticesByCategory = async (req, res, next) => {
-  const { page, limit = 10, category, search, field } = req.query;
+  const { page, limit = 12, category, search, field } = req.query;
   let skip = 0;
   page > 1 ? (skip = (page - 1) * limit) : (skip = 0);
   const results = await getByCategory(
@@ -26,7 +27,7 @@ const getNoticesByCategory = async (req, res, next) => {
     next();
     return;
   }
-  if (results && results.length < 10) {
+  if (results && results.length < 12) {
     res.json({
       code: 200,
       status: 'Success',
@@ -62,8 +63,22 @@ const getNoticeByID = async (req, res, next) => {
 const addNotice = async (req, res, next) => {
   const user = req.user;
   const notice = req.body;
+  const newNotice = await addByCategory(user._id, notice);
+  req.result = newNotice;
+  next();
+};
+
+const addAvatar = async (req, res, next) => {
   const avatarURL = req.avatarURL;
-  const result = await addByCategory(user._id, notice, avatarURL);
+  const notice = req.result;
+  const result = await addNoticeAvatar(avatarURL, notice);
+  if (!result) {
+    res.status(500).json({
+      code: 500,
+      status: 'Failed',
+      message: 'Upload avatar failed, try again',
+    });
+  }
   res.status(201).json({
     code: 201,
     status: 'Success',
@@ -154,6 +169,7 @@ module.exports = {
   getNoticesByCategory,
   getNoticeByID,
   addNotice,
+  addAvatar,
   getFavoriteNotices,
   getPrivateNotices,
   addToFavorite,

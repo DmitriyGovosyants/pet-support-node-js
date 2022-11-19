@@ -6,6 +6,7 @@ const { BASE_URL } = process.env;
 
 const addAvatar = async (name, filename, destination) => {
   const avatarName = `${name}_avatar.png`;
+  console.log(avatarName);
   jimp
     .read(`./tmp/${filename}`)
     .then(avatar => {

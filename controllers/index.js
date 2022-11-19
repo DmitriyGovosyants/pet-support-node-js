@@ -1,32 +1,12 @@
 const noticeController = require('./noticeController');
-const {
-  registerController,
-  loginController,
-  logoutController,
-} = require('./authController');
-const {
-  getPets,
-  getPetsById,
-  addPets,
-  deletePet,
-  getUser,
-  updateUser,
-  updatePet,
-} = require('./userController');
+const authController = require('./authController');
+const userController = require('./userController');
 const newsController = require('./newsController');
 const servicesController = require('./servicesController');
 
 module.exports = {
-  registerController,
-  loginController,
-  logoutController,
-  getPets,
-  getPetsById,
-  addPets,
-  deletePet,
-  getUser,
-  updateUser,
-  updatePet,
+  authController,
+  userController,
   servicesController,
   newsController,
   noticeController,

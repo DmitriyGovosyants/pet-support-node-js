@@ -1,5 +1,6 @@
-const { userService, registration, login, logout } = require('../services');
+const { userService, authService } = require('../services');
 const { findUserByEmail } = userService;
+const { registration, login, logout } = authService;
 
 //  Регистрация юзера
 const registerController = async (req, res) => {
@@ -7,7 +8,7 @@ const registerController = async (req, res) => {
   if (user) {
     return res.status(409).json({
       code: 409,
-      message: 'Email in use',
+      message: 'Email is invalid',
     });
   }
   const token = await registration(req.body);
@@ -63,8 +64,21 @@ const logoutController = async (req, res) => {
   });
 };
 
+// Проверка текущего юзера
+const currentController = async (req, res) => {
+  const { token } = req.user;
+  if (!token) {
+    return;
+  }
+  res.json({
+    code: 200,
+    message: 'User confirmed',
+  });
+};
+
 module.exports = {
   registerController,
   loginController,
   logoutController,
+  currentController,
 };

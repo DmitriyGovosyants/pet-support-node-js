@@ -14,6 +14,7 @@ const {
   getFavoriteNotices,
   getPrivateNotices,
   addNotice,
+  addAvatar,
   addToFavorite,
   deleteFromFavorite,
   deleteFromPrivate,
@@ -26,8 +27,9 @@ router.post(
   authentificate,
   upload.single('avatar'),
   noticeValidation,
-  fileLoader,
-  ctrlWrapper(addNotice)
+  ctrlWrapper(addNotice),
+  ctrlWrapper(fileLoader),
+  ctrlWrapper(addAvatar)
 );
 
 router.get('/favorites', authentificate, ctrlWrapper(getFavoriteNotices));

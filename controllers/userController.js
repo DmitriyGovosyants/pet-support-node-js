@@ -1,8 +1,9 @@
 // Контроллеры - прописываю логику обработки  маршрута
 const { petsService, userService } = require('../services');
 
-const { getAllPet, createPet, removePet, updatePetInfo } = petsService;
-const { findUserById, updateUserInfo } = userService;
+const { getAllPet, createPet, removePet, updatePetInfo, addPetAvatar } =
+  petsService;
+const { findUserById, updateUserInfo, addUserAvatar } = userService;
 
 // Получение информации о юзере
 
@@ -20,16 +21,30 @@ const getUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
   const user = req.user;
   const info = req.body;
+  const newUser = await updateUserInfo(user._id, info);
+  req.result = newUser;
+  next();
+};
+
+const addAvatar = async (req, res, next) => {
   const avatarURL = req.avatarURL;
-  const result = await updateUserInfo(user._id, info, avatarURL);
+  const user = req.result;
+  const result = await addUserAvatar(avatarURL, user);
+  if (!result) {
+    res.status(500).json({
+      code: 500,
+      status: 'Failed',
+      message: 'Upload avatar failed, try again',
+    });
+  }
   res.status(201).json({
     code: 201,
     status: 'Success',
     data: {
-      notice: result,
+      user: result,
     },
   });
 };
@@ -42,32 +57,40 @@ const getPets = async (req, res) => {
 };
 
 // Создание карточки Pet
-const addPets = async (req, res) => {
+const addPet = async (req, res, next) => {
   const user = req.user;
   const pet = req.body;
-  const avatarURL = req.avatarURL;
-  const result = await createPet(user._id, pet, avatarURL);
-  res.status(201).json({
-    code: 201,
-    data: {
-      pet: result,
-    },
-    status: 'Success',
-  });
+  const newPet = await createPet(user._id, pet);
+  req.result = newPet;
+  next();
 };
 
 // Обновление карточки Pet
 
-const updatePet = async (req, res) => {
+const updatePet = async (req, res, next) => {
   const { petID } = req.params;
   const info = req.body;
+  const updatedPet = await updatePetInfo(petID, info);
+  req.result = updatedPet;
+  next();
+};
+
+const updatePetAvatar = async (req, res, next) => {
   const avatarURL = req.avatarURL;
-  const result = await updatePetInfo(petID, info, avatarURL);
+  const pet = req.result;
+  const result = await addPetAvatar(avatarURL, pet);
+  if (!result) {
+    res.status(500).json({
+      code: 500,
+      status: 'Failed',
+      message: 'Upload avatar failed, try again',
+    });
+  }
   res.status(201).json({
     code: 201,
     status: 'Success',
     data: {
-      notice: result,
+      pet: result,
     },
   });
 };
@@ -85,9 +108,11 @@ const deletePet = async (req, res, next) => {
 
 module.exports = {
   updateUser,
+  addAvatar,
   updatePet,
+  updatePetAvatar,
   getPets,
-  addPets,
+  addPet,
   deletePet,
   getUser,
 };
