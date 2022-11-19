@@ -18,8 +18,8 @@ const getPetById = async petID => {
 };
 
 // Создает  новую карточку Pet
-const createPet = async (userID, pet, avatarURL) => {
-  const newPet = await Pet.create({ ...pet, avatarURL: avatarURL });
+const createPet = async (userID, pet) => {
+  const newPet = await Pet.create({ ...pet });
   const updateUser = await User.findByIdAndUpdate(
     { _id: userID },
     { $push: { pets: newPet._id } }
@@ -30,7 +30,7 @@ const createPet = async (userID, pet, avatarURL) => {
 };
 
 // Обновление карточку Pet
-const updatePetInfo = async (petID, info, avatarURL) => {
+const updatePetInfo = async (petID, info) => {
   const { name, birthdate, breed, comments } = info;
   const pet = await Pet.findByIdAndUpdate(
     { _id: petID },
@@ -39,7 +39,6 @@ const updatePetInfo = async (petID, info, avatarURL) => {
       birthdate: birthdate,
       breed: breed,
       comments: comments,
-      avatarURL: avatarURL,
     },
     { new: true }
   );
@@ -47,6 +46,20 @@ const updatePetInfo = async (petID, info, avatarURL) => {
     return null;
   }
   return pet;
+};
+
+const addPetAvatar = async (avatarURL, pet) => {
+  const avatar = await Pet.findByIdAndUpdate(
+    { _id: pet._id },
+    {
+      avatarURL: avatarURL,
+    },
+    { new: true }
+  );
+  if (!avatar) {
+    return null;
+  }
+  return avatar;
 };
 
 const removePet = async (userID, petsID) => {
@@ -68,5 +81,6 @@ module.exports = {
   getPetById,
   createPet,
   updatePetInfo,
+  addPetAvatar,
   removePet,
 };
