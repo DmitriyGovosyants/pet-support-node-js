@@ -57,7 +57,6 @@ const noticeValidation = (req, res, next) => {
       }),
     price: Joi.string()
       .regex(/^[1-9][0-9]*$/)
-      .required()
       .messages({
         'string.pattern.base': "Price couldn't start from 0",
       }),
@@ -69,6 +68,8 @@ const noticeValidation = (req, res, next) => {
         'string.min': 'Comments should have a minimum length of {#limit}',
         'string.max': 'Comments should have a maximum length of {#limit}',
       }),
+  }).when(Joi.object({ category: Joi.valid('sell') }).unknown(), {
+    then: Joi.object({ price: Joi.required() }),
   });
   const validation = schema.validate(req.body);
   if (validation.error) {
