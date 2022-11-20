@@ -32,7 +32,7 @@ const noticeSchema = new Schema({
   },
   price: {
     type: String,
-    required: [true, 'Set price for notice'],
+    default: null,
   },
   avatarURL: {
     type: String,
