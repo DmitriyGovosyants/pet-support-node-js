@@ -29,7 +29,7 @@ const noticeValidation = (req, res, next) => {
         'string.pattern.base': 'Name should have only letters',
       }),
     birthdate: Joi.date()
-      .format('DD-MM-YYYY')
+      .format('DD.MM.YYYY')
       .raw()
       .max('now')
       .allow(null, '')
