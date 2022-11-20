@@ -4,6 +4,7 @@ const {
   authentificate,
   petsValidation,
   userValidation,
+  updateUsersValidation,
   fileLoader,
 } = require('../../middlewares');
 const { ctrlWrapper, upload } = require('../../helpers');
@@ -23,11 +24,11 @@ const {
 
 router.get('/info', authentificate, ctrlWrapper(getUser)); // Роут отримання особистої інфо користувача
 router.get('/pets', authentificate, ctrlWrapper(getPets)); // Роут для отримання інфо о тваринах користувача
-router.put(
+router.patch(
   '/info',
   authentificate,
   upload.single('avatar'),
-  userValidation,
+  updateUsersValidation,
   ctrlWrapper(updateUser),
   ctrlWrapper(fileLoader),
   ctrlWrapper(addAvatar)

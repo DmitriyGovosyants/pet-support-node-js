@@ -20,7 +20,7 @@ const userSchema = new Schema(
     },
     birthdate: {
       type: String,
-      default: null,
+      default: '00.00.0000',
     },
     city: {
       type: String,

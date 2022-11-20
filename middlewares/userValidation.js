@@ -44,6 +44,51 @@ const userSchema = Joi.object({
     }),
   avatarURL: Joi.string(),
 });
+
+//  Обновление юзера
+
+// Схема валидации обновления контакта
+const updateUsersSchema = Joi.object({
+  name: Joi.string()
+    .regex(/^[a-zA-Zа-яА-Я\s]*$/)
+    .optional()
+    .messages({
+      'string.pattern.base': 'Name should have only letters',
+    }),
+  city: Joi.string()
+    .regex(/^[a-zA-Zа-яА-Я]+, [a-zA-Zа-яА-Я]+$/)
+    .optional()
+    .messages({
+      'string.pattern.base': 'You should type in City, Region',
+    }),
+  birthdate: Joi.date().format('DD.MM.YYYY').raw().max('now').messages({
+    'date.format': ' Please, type in DD.MM.YYYY format',
+  }),
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: ['com', 'net', 'org', 'ua', 'ru', 'gov', 'ca'] },
+    })
+    .optional()
+    .messages({
+      'string.base':
+        'email must contain a domain name .com, .net, .org, .ua, .ru, .gov, .ca',
+    })
+    .optional(),
+  password: Joi.string()
+    .pattern(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
+    .messages({
+      'string.pattern.base': 'Password length should have at 7 to 32 symbol',
+    }),
+  phone: Joi.string()
+    .pattern(/^(\+[0-9]{12})$/)
+    .optional()
+    .messages({
+      'string.pattern.base': 'Please, type + and 12 numbers',
+    }),
+  avatarURL: Joi.string(),
+});
+
 //  Пояснения пароля:
 //* будь-які літери та символи окрім пробілів. мін 7 символів максимум 32
 // (?=.*[0-9]) - строка содержит хотя бы одно число;
@@ -69,5 +114,8 @@ const validate = (schema, res, req, next) => {
 module.exports = {
   userValidation: (req, res, next) => {
     return validate(userSchema, res, req, next);
+  },
+  updateUsersValidation: (req, res, next) => {
+    return validate(updateUsersSchema, res, req, next);
   },
 };
