@@ -3,7 +3,6 @@ const { userController } = require('../../controllers');
 const {
   authentificate,
   petsValidation,
-  userValidation,
   updateUsersValidation,
   fileLoader,
 } = require('../../middlewares');
