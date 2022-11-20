@@ -51,7 +51,6 @@ const validate = (schema, res, req, next) => {
   const validationBody = schema.validate(req.body);
 
   if (validationBody.error) {
-    console.log("validationBody:::", validationBody.error)
     return res.status(400).json({
       code: 400,
       message: validationBody.error.message.replace(/"/g, ''),
