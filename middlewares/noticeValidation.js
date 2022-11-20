@@ -11,15 +11,17 @@ const noticeValidation = (req, res, next) => {
       })
       .required(),
     title: Joi.string()
-      .regex(/^[a-zA-Zа-яА-Я\s]*$/)
+      .regex(/^[^ 0-9][a-zA-Zа-яА-ЯёЁіІїЇєЄ\s]*$/)
       .min(2)
       .max(48)
       .required()
       .messages({
+        'string.min': 'Name should have a minimum length of {#limit}',
+        'string.max': 'Name should have a maximum length of {#limit}',
         'string.pattern.base': 'Title should have only letters',
       }),
     name: Joi.string()
-      .regex(/^[a-zA-Zа-яА-Я\s]*$/)
+      .regex(/^[^ 0-9][a-zA-Zа-яА-ЯёЁіІїЇєЄ\s]*$/)
       .min(2)
       .max(16)
       .allow(null, '')
@@ -29,15 +31,15 @@ const noticeValidation = (req, res, next) => {
         'string.pattern.base': 'Name should have only letters',
       }),
     birthdate: Joi.date()
-      .format('DD-MM-YYYY')
+      .format('DD.MM.YYYY')
       .raw()
       .max('now')
       .allow(null, '')
       .messages({
-        'date.format': ' Please, type in DD-MM-YYYY format',
+        'date.format': ' Please, type in DD.MM.YYYY format',
       }),
     breed: Joi.string()
-      .regex(/^[a-zA-Zа-яА-Я\s]*$/)
+      .regex(/^[^ 0-9][a-zA-Zа-яА-ЯёЁіІїЇєЄ\s]*$/)
       .min(2)
       .max(24)
       .allow(null, '')
@@ -50,7 +52,7 @@ const noticeValidation = (req, res, next) => {
       'any.only': 'You can choose only male or female',
     }),
     location: Joi.string()
-      .regex(/^[a-zA-Zа-яА-Я]+, [a-zA-Zа-яА-Я]+$/)
+      .regex(/^[a-zA-Zа-яА-ЯёЁіІїЇєЄ]+, [a-zA-Zа-яА-ЯёЁіІїЇєЄ]+$/)
       .allow(null, '')
       .messages({
         'string.pattern.base': 'You should type in City, Region',
@@ -65,8 +67,7 @@ const noticeValidation = (req, res, next) => {
       .regex(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\s]{8,120}$/)
       .required()
       .messages({
-        'string.min': 'Comments should have a minimum length of {#limit}',
-        'string.max': 'Comments should have a maximum length of {#limit}',
+        'string.pattern.base': 'Comments should have length from 8 till 120',
       }),
   }).when(Joi.object({ category: Joi.valid('sell') }).unknown(), {
     then: Joi.object({ price: Joi.required() }),
