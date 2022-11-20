@@ -16,7 +16,8 @@ const getNoticesByCategory = async (req, res, next) => {
   const { page, limit = 12, category, search, field } = req.query;
   let skip = 0;
   page > 1 ? (skip = (page - 1) * limit) : (skip = 0);
-  const results = await getByCategory(
+  const numberPage = parseInt(page);
+  const { results, total } = await getByCategory(
     category,
     search,
     field,
@@ -32,7 +33,7 @@ const getNoticesByCategory = async (req, res, next) => {
       code: 200,
       status: 'Success',
       data: { notices: results },
-      message: results.length,
+      total: total,
     });
     return;
   }
@@ -42,8 +43,8 @@ const getNoticesByCategory = async (req, res, next) => {
     data: {
       notices: results,
     },
-    message: results.length,
-    page,
+    total: total,
+    page: numberPage,
     limit,
   });
 };
@@ -90,26 +91,74 @@ const addAvatar = async (req, res, next) => {
 };
 
 const getFavoriteNotices = async (req, res, next) => {
+  const { page, limit = 12 } = req.query;
+  let skip = 0;
+  page > 1 ? (skip = (page - 1) * limit) : (skip = 0);
+  const numberPage = parseInt(page);
   const user = req.user;
-  const result = await getFavorites(user._id);
+  const { results, total } = await getFavorites(
+    user._id,
+    parseInt(skip),
+    parseInt(limit)
+  );
+  if (results.length === 0) {
+    next();
+    return;
+  }
+  if (results && results.length < 12) {
+    res.json({
+      code: 200,
+      status: 'Success',
+      data: { favoriteNotices: results },
+      total: total,
+    });
+    return;
+  }
   res.json({
     code: 200,
     status: 'Success',
     data: {
-      favoriteNotices: result,
+      favoriteNotices: results,
     },
+    total: total,
+    page: numberPage,
+    limit,
   });
 };
 
 const getPrivateNotices = async (req, res, next) => {
+  const { page, limit = 12 } = req.query;
+  let skip = 0;
+  page > 1 ? (skip = (page - 1) * limit) : (skip = 0);
+  const numberPage = parseInt(page);
   const user = req.user;
-  const result = await getPrivates(user._id);
+  const { results, total } = await getPrivates(
+    user._id,
+    parseInt(skip),
+    parseInt(limit)
+  );
+  if (results.length === 0) {
+    next();
+    return;
+  }
+  if (results && results.length < 12) {
+    res.json({
+      code: 200,
+      status: 'Success',
+      data: { notices: results },
+      total: total,
+    });
+    return;
+  }
   res.json({
     code: 200,
     status: 'Success',
     data: {
-      notices: result,
+      notices: results,
     },
+    total: total,
+    page: numberPage,
+    limit,
   });
 };
 

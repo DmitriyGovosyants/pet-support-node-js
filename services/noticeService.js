@@ -3,8 +3,14 @@ const isValid = require('mongoose').Types.ObjectId.isValid;
 const ObjectId = require('mongoose').Types.ObjectId;
 const { deleteFile } = require('./uploadService');
 
-const getByCategory = async (category, search, field = 'title', skip, limit) =>
-  await Notice.find({
+const getByCategory = async (
+  category,
+  search,
+  field = 'title',
+  skip,
+  limit
+) => {
+  const results = await Notice.find({
     category: category,
     [field]: { $regex: search, $options: 'i' },
   })
@@ -12,6 +18,12 @@ const getByCategory = async (category, search, field = 'title', skip, limit) =>
     .skip(skip)
     .limit(limit)
     .populate({ path: 'owner', select: 'email phone' });
+  const total = await Notice.countDocuments({
+    category: category,
+    [field]: { $regex: search, $options: 'i' },
+  });
+  return { results, total };
+};
 
 const getByID = async noticeID => {
   if (!isValid(noticeID)) return false;
@@ -46,14 +58,34 @@ const addNoticeAvatar = async (avatarURL, notice) => {
   return avatar;
 };
 
-const getFavorites = async userID => {
-  const user = await User.findOne({ _id: userID }).populate('favoriteNotices');
-  return user.favoriteNotices;
+const getFavorites = async (userID, skip, limit) => {
+  const user = await User.findOne({ _id: userID }).populate({
+    path: 'favoriteNotices',
+    options: {
+      limit: limit,
+      sort: { created: -1 },
+      skip: skip,
+    },
+  });
+  const results = user.favoriteNotices;
+  const { favoriteNotices } = await User.findOne({ _id: userID });
+  const total = favoriteNotices.length;
+  return { results, total };
 };
 
-const getPrivates = async userID => {
-  const user = await User.findOne({ _id: userID }).populate('notices');
-  return user.notices;
+const getPrivates = async (userID, skip, limit) => {
+  const user = await User.findOne({ _id: userID }).populate({
+    path: 'notices',
+    options: {
+      limit: limit,
+      sort: { created: -1 },
+      skip: skip,
+    },
+  });
+  const results = user.notices;
+  const { notices } = await User.findOne({ _id: userID });
+  const total = notices.length;
+  return { results, total };
 };
 
 const addToFavoriteByNoticeID = async (userID, noticeID) => {
