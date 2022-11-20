@@ -46,8 +46,6 @@ const userSchema = Joi.object({
 });
 
 //  Обновление юзера
-
-// Схема валидации обновления контакта
 const updateUsersSchema = Joi.object({
   name: Joi.string()
     .regex(/^[a-zA-Zа-яА-Я\s]*$/)
