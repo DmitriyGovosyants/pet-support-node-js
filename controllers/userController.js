@@ -65,7 +65,7 @@ const addPet = async (req, res, next) => {
   next();
 };
 
-//Обновление карточки Pet
+// Обновление карточки Pet
 
 const updatePet = async (req, res, next) => {
   const { petID } = req.params;
