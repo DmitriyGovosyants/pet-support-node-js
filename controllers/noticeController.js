@@ -32,7 +32,7 @@ const getNoticesByCategory = async (req, res, next) => {
       code: 200,
       status: 'Success',
       data: { notices: results },
-      message: 'Notices ended',
+      message: results.length,
     });
     return;
   }
@@ -42,6 +42,7 @@ const getNoticesByCategory = async (req, res, next) => {
     data: {
       notices: results,
     },
+    message: results.length,
     page,
     limit,
   });
