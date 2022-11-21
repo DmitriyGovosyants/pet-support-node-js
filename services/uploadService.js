@@ -10,9 +10,7 @@ const addAvatar = async (name, filename, destination) => {
   jimp
     .read(`./tmp/${filename}`)
     .then(avatar => {
-      return avatar
-        .resize(700, 700) // resize
-        .write(`./public/${destination}/${avatarName}`); // save
+      return avatar.write(`./public/${destination}/${avatarName}`); // save
     })
     .catch(err => {
       console.error(err);

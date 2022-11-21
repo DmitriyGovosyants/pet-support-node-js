@@ -14,7 +14,7 @@ const getByCategory = async (
     category: category,
     [field]: { $regex: search, $options: 'i' },
   })
-    .select({ __v: 0 })
+    .select({ createdAt: 0, updatedAt: 0 })
     .skip(skip)
     .limit(limit)
     .populate({ path: 'owner', select: 'email phone' });
@@ -51,7 +51,7 @@ const addNoticeAvatar = async (avatarURL, notice) => {
       avatarURL: avatarURL,
     },
     { new: true }
-  );
+  ).select({ createdAt: 0, updatedAt: 0 });
   if (!avatar) {
     return null;
   }
@@ -63,9 +63,10 @@ const getFavorites = async (userID, skip, limit) => {
     path: 'favoriteNotices',
     options: {
       limit: limit,
-      sort: { created: -1 },
+      sort: { createdAt: -1 },
       skip: skip,
     },
+    select: '-createdAt -updatedAt',
   });
   const results = user.favoriteNotices;
   const { favoriteNotices } = await User.findOne({ _id: userID });
@@ -78,9 +79,10 @@ const getPrivates = async (userID, skip, limit) => {
     path: 'notices',
     options: {
       limit: limit,
-      sort: { created: -1 },
+      sort: { createdAt: -1 },
       skip: skip,
     },
+    select: '-createdAt -updatedAt',
   });
   const results = user.notices;
   const { notices } = await User.findOne({ _id: userID });
