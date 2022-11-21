@@ -5,7 +5,7 @@ const { deleteFile } = require('./uploadService');
 
 const getByCategory = async (
   category,
-  search,
+  search = '',
   field = 'title',
   skip,
   limit
@@ -74,8 +74,6 @@ const getFavorites = async (userID, skip, limit) => {
 };
 
 const getPrivates = async (userID, skip, limit) => {
-  console.log(skip);
-  console.log(limit);
   const user = await User.findOne({ _id: userID }).populate({
     path: 'notices',
     options: {
