@@ -101,10 +101,6 @@ const getFavoriteNotices = async (req, res, next) => {
     parseInt(skip),
     parseInt(limit)
   );
-  if (results.length === 0) {
-    next();
-    return;
-  }
   if (results && results.length < 12) {
     res.json({
       code: 200,
@@ -137,10 +133,6 @@ const getPrivateNotices = async (req, res, next) => {
     parseInt(skip),
     parseInt(limit)
   );
-  if (results.length === 0) {
-    next();
-    return;
-  }
   if (results && results.length < 12) {
     res.json({
       code: 200,
