@@ -33,7 +33,7 @@ const userSchema = Joi.object({
     })
     .required(),
   password: Joi.string()
-    .pattern(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
+    .pattern(/^[0-9a-zA-Zа-яА-ЯёЁіІїЇєЄ_!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
     .messages({
       'string.pattern.base': 'Password length should have at 7 to 32 symbol and does not contain a space',
     }),
@@ -77,7 +77,7 @@ const updateUsersSchema = Joi.object({
     })
     .optional(),
   password: Joi.string()
-    .pattern(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
+    .pattern(/^[0-9a-zA-Zа-яА-ЯёЁіІїЇєЄ_!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
     .messages({
       'string.pattern.base': 'Password length should have at 7 to 32 symbol and does not contain a space',
     }),

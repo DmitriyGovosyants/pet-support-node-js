@@ -6,7 +6,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 // Схема валидации создания карточки Pet
 const addPetSchema = Joi.object({
   name: Joi.string()
-    .regex(/^[a-zA-Zа-яА-Я\s]*$/)
+    .regex(/^[a-zA-Zа-яА-ЯёЁіІїЇєЄ\s]*$/)
     .min(2)
     .max(16)
     .required()
@@ -24,7 +24,7 @@ const addPetSchema = Joi.object({
       'date.format': ' Please, type in DD.MM.YYYY format',
     }),
   breed: Joi.string()
-    .regex(/^[a-zA-Zа-яА-Я\s]*$/)
+    .regex(/^[a-zA-Zа-яА-ЯёЁіІїЇєЄ\s]*$/)
     .min(2)
     .max(16)
     .required()
@@ -35,7 +35,7 @@ const addPetSchema = Joi.object({
     }),
   avatarURL: Joi.string(),
   comments: Joi.string()
-    .regex(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\s]{8,120}$/)
+    .regex(/^[0-9a-zA-Zа-яА-ЯёЁіІїЇєЄ_!@#$%^&+=*,:;><'"~`?/.|\s]{8,120}$/)
     .required()
     .messages({
       'string.min': 'Comments should have a minimum length of {#limit}',
