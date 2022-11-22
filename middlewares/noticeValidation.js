@@ -64,11 +64,7 @@ const noticeValidation = (req, res, next) => {
       }),
     avatarURL: Joi.string(),
     comments: Joi.string()
-<<<<<<< Updated upstream
-      .regex(/^[0-9a-zA-Zа-яА-ЯёЁіІїЇєЄ_!@#$%^&+=*,:;><'"~`?/.|\s]{8,120}$/)
-=======
       .regex(/^[0-9a-zA-Zа-яА-ЯёЁіІїЇєЄ!@#$%^&+=*,:;><'"~`?_\-()\/.|\s]{8,120}$/)
->>>>>>> Stashed changes
       .required()
       .messages({
         'string.pattern.base': 'Comments should have length from 8 till 120',
