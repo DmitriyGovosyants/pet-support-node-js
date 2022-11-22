@@ -15,9 +15,9 @@ const getByCategory = async (
     [field]: { $regex: search, $options: 'i' },
   })
     .select({ createdAt: 0, updatedAt: 0 })
+    .sort({ createdAt: -1 })
     .skip(skip)
-    .limit(limit)
-    .populate({ path: 'owner', select: 'email phone' });
+    .limit(limit);
   const total = await Notice.countDocuments({
     category: category,
     [field]: { $regex: search, $options: 'i' },
@@ -33,12 +33,13 @@ const getByID = async noticeID => {
 const addByCategory = async (userID, notice) => {
   const newNotice = await Notice.create({
     ...notice,
-    owner: userID,
   });
   const updateUser = await User.findByIdAndUpdate(
     { _id: userID },
     { $push: { notices: newNotice._id } }
   );
+  newNotice.owner = { email: updateUser.email, phone: updateUser.phone };
+  await newNotice.save();
   if (newNotice && updateUser) {
     return newNotice;
   }
@@ -82,7 +83,7 @@ const getPrivates = async (userID, skip, limit) => {
       sort: { createdAt: -1 },
       skip: skip,
     },
-    select: '-createdAt -updatedAt',
+    select: '-createdAt -updatedAt -owner',
   });
   const results = user.notices;
   const { notices } = await User.findOne({ _id: userID });

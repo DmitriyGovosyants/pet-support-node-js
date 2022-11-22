@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const Users = require('./users');
 
 const noticeSchema = new Schema(
   {
@@ -44,8 +43,8 @@ const noticeSchema = new Schema(
       required: [true, 'Set comments for notice'],
     },
     owner: {
-      type: String,
-      ref: Users,
+      email: String,
+      phone: String,
     },
   },
   { versionKey: false, timestamps: true }
