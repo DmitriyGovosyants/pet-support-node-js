@@ -9,7 +9,8 @@ const userSchema = Joi.object({
     .regex(/^[^ 0-9][a-zA-Zа-яА-ЯёЁіІїЇєЄ\s]*$/)
     .required()
     .messages({
-      'string.pattern.base': 'Name should have only letters and don`t start with a space',
+      'string.pattern.base':
+        'Name should have only letters and don`t start with a space',
       'string.empty': 'Name can`t be empty',
     }),
   city: Joi.string()
@@ -22,6 +23,7 @@ const userSchema = Joi.object({
     'date.format': ' Please, type in DD.MM.YYYY format',
   }),
   email: Joi.string()
+    .regex(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/)
     .email({
       minDomainSegments: 2,
       tlds: { allow: ['com', 'net', 'org', 'ua', 'ru', 'gov', 'ca'] },
@@ -30,12 +32,14 @@ const userSchema = Joi.object({
     .messages({
       'string.email':
         'email must contain a domain name .com, .net, .org, .ua, .ru, .gov, .ca',
+      'string.pattern.base': 'Email only on English and with @',
     })
     .required(),
   password: Joi.string()
     .pattern(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
     .messages({
-      'string.pattern.base': 'Password length should have at 7 to 32 symbol and does not contain a space',
+      'string.pattern.base':
+        'Password length should have at 7 to 32 symbol and does not contain a space',
     }),
   phone: Joi.string()
     .pattern(/^(\+[0-9]{12})$/)
@@ -46,14 +50,14 @@ const userSchema = Joi.object({
   avatarURL: Joi.string(),
 });
 
-
 //  Обновление юзера
 const updateUsersSchema = Joi.object({
   name: Joi.string()
     .regex(/^[^ 0-9][a-zA-Zа-яА-ЯёЁіІїЇєЄ\s]*$/)
     .optional()
     .messages({
-      'string.pattern.base': 'Name should have only letters and don`t start with a space',
+      'string.pattern.base':
+        'Name should have only letters and don`t start with a space',
       'string.empty': 'Name can`t be empty',
     }),
   city: Joi.string()
@@ -79,7 +83,8 @@ const updateUsersSchema = Joi.object({
   password: Joi.string()
     .pattern(/^[0-9a-zA-Zа-яА-Я!@#$%^&+=*,:;><'"~`?/.|\S+]{7,32}$/)
     .messages({
-      'string.pattern.base': 'Password length should have at 7 to 32 symbol and does not contain a space',
+      'string.pattern.base':
+        'Password length should have at 7 to 32 symbol and does not contain a space',
     }),
   phone: Joi.string()
     .pattern(/^(\+[0-9]{12})$/)
