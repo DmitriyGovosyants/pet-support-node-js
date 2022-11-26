@@ -1,6 +1,6 @@
 const isValid = require('mongoose').Types.ObjectId.isValid;
 const ObjectId = require('mongoose').Types.ObjectId;
-const { deleteFile } = require('./uploadService');
+const { deleteImage } = require('./google-cloud');
 
 // Сервис работы с БД
 const { Pet, User } = require('../models');
@@ -69,9 +69,9 @@ const removePet = async (userID, petsID) => {
     return false;
   }
   const { avatarURL } = await Pet.findByIdAndRemove({ _id: petsID });
+  const destination = 'users/pets';
   if (avatarURL) {
-    const pathToImage = avatarURL.slice(22, avatarURL.length);
-    await deleteFile(pathToImage);
+    await deleteImage(avatarURL, destination);
   }
   return await user.update({ $pull: { pets: petsID } });
 };

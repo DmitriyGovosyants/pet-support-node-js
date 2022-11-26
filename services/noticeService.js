@@ -1,7 +1,7 @@
 const { Notice, User } = require('../models');
 const isValid = require('mongoose').Types.ObjectId.isValid;
 const ObjectId = require('mongoose').Types.ObjectId;
-const { deleteFile } = require('./uploadService');
+const { deleteImage } = require('./google-cloud');
 
 const getByCategory = async (
   category,
@@ -122,9 +122,9 @@ const deleteFromPrivateByNoticeID = async (userID, noticeID) => {
     return false;
   }
   const { avatarURL } = await Notice.findByIdAndRemove({ _id: noticeID });
+  const destination = 'notices';
   if (avatarURL) {
-    const pathToImage = avatarURL.slice(22, avatarURL.length);
-    await deleteFile(pathToImage);
+    await deleteImage(avatarURL, destination);
   }
   return await user.update({ $pull: { notices: noticeID } });
 };

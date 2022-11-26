@@ -1,9 +1,8 @@
 // const { customAlphabet } = require('nanoid');
 const ObjectId = require('mongoose').Types.ObjectId;
-const { addAvatar } = require('../services');
+const { addAvatar, setAvatarURL } = require('../services');
 
 const whitelist = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
-// const nanoid = customAlphabet('1234567890abcdef', 6);
 
 const fileLoader = async (req, res, next) => {
   const { fileTypeFromFile } = await import('file-type');
@@ -26,7 +25,8 @@ const fileLoader = async (req, res, next) => {
     next(res.status(415).json({ message: 'Unsupported media type' }));
   }
   const avatar = await addAvatar(uniqueName, filename, destination);
-  req.avatarURL = avatar;
+  const avatarURL = await setAvatarURL(avatar, destination);
+  req.avatarURL = avatarURL;
   next();
 };
 

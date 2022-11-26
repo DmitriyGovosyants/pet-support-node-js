@@ -1,32 +1,39 @@
 const fs = require('fs');
+const path = require('path');
 const jimp = require('jimp');
-require('dotenv').config();
+const {
+  uploadImage,
+  // deleteImage,
+  getAvatarUrl,
+} = require('../services/google-cloud');
 
-const { BASE_URL } = process.env;
+const tmpDirPath = path.join(__dirname, '..', '/', 'tmp');
 
 const addAvatar = async (name, filename, destination) => {
   const avatarName = `${name}_avatar.png`;
-  console.log(avatarName);
-  jimp
-    .read(`./tmp/${filename}`)
-    .then(avatar => {
-      return avatar.write(`./public/${destination}/${avatarName}`); // save
-    })
-    .catch(err => {
-      console.error(err);
+  const tmpFilePath = `${tmpDirPath}/${filename}`;
+  try {
+    await jimp
+      .read(tmpFilePath)
+      .then(avatar => {
+        return avatar.writeAsync(tmpFilePath);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    await uploadImage(filename, avatarName, destination);
+    await fs.unlink(tmpFilePath, err => {
+      if (err) console.log(err);
+      else console.log(`${filename} was deleted`);
     });
-  fs.unlink(`./tmp/${filename}`, err => {
-    if (err) console.log(err);
-    else console.log(`${filename} was deleted`);
-  });
-  return `${BASE_URL}/${destination}/${avatarName}`;
+    // await deleteImage(imageURL, destination);
+    return avatarName;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const deleteFile = async filePath => {
-  fs.unlink(`./public/${filePath}`, err => {
-    if (err) console.log(err);
-    else console.log(`${filePath} was deleted`);
-  });
-};
+const setAvatarURL = async (filename, destination) =>
+  await getAvatarUrl(filename, destination);
 
-module.exports = { addAvatar, deleteFile };
+module.exports = { addAvatar, setAvatarURL };
