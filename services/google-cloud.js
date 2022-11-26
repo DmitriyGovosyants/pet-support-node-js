@@ -8,7 +8,6 @@ const baseURL = 'https://storage.googleapis.com';
 
 async function uploadImage(fileName, avatarName, destination) {
   const filePath = `${tmpDirPath}/${fileName}`;
-  console.log(destination);
   const options = {
     destination: `${destination}/${avatarName}`,
     metadata: {
