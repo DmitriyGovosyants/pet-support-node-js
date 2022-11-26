@@ -31,7 +31,7 @@ router.patch(
   ctrlWrapper(updateUser),
   ctrlWrapper(fileLoader),
   ctrlWrapper(addAvatar)
-); // Роут для отримання одного із полів інфо користувача
+); // Роут для оновлення одного із полів інфо користувача
 router.post(
   '/pets',
   authentificate,
