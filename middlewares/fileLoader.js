@@ -1,4 +1,4 @@
-// const { customAlphabet } = require('nanoid');
+
 const ObjectId = require('mongoose').Types.ObjectId;
 const { addAvatar, setAvatarURL } = require('../services');
 

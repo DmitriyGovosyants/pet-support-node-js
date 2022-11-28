@@ -3,7 +3,6 @@ const path = require('path');
 const jimp = require('jimp');
 const {
   uploadImage,
-  // deleteImage,
   getAvatarUrl,
 } = require('../services/google-cloud');
 
@@ -26,7 +25,6 @@ const addAvatar = async (name, filename, destination) => {
       if (err) console.log(err);
       else console.log(`${filename} was deleted`);
     });
-    // await deleteImage(imageURL, destination);
     return avatarName;
   } catch (error) {
     console.log(error);
