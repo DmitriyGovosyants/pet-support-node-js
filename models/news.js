@@ -19,7 +19,6 @@ const newsShema = new Schema({
     }
 }, {
     versionKey: false
-    // , timestamps: true
 }
 )
 
