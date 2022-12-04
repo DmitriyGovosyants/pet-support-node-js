@@ -105,7 +105,7 @@ const getFavoriteNotices = async (req, res, next) => {
     res.json({
       code: 200,
       status: 'Success',
-      data: { favoriteNotices: results },
+      data: { notices: results },
       total: total,
     });
     return;
@@ -114,7 +114,7 @@ const getFavoriteNotices = async (req, res, next) => {
     code: 200,
     status: 'Success',
     data: {
-      favoriteNotices: results,
+      notices: results,
     },
     total: total,
     page: numberPage,
